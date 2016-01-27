@@ -1,0 +1,265 @@
+#%RAML 0.8
+title: Diseases Service
+version: 1.0 development
+#baseUri: http://diseases/api
+baseUri: http://mocksvc.mulesoft.com/mocks/01beac3d-861b-4be9-ae94-47672354c991/api
+/users/{id}:
+  displayName: User
+  get:
+    description: View profile of an user
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+              {
+                "id":"1",
+                "email":"email1@yahoo.com",
+                "name":"Ion Popescu",
+                "sex":"Male",
+                "country":"Romania",
+                "score":"100"
+              },
+              {
+                "id":"2",
+                "email":"email2@yahoo.com",
+                "name":"Alina Maria",
+                "sex":"Female",
+                "country":"France",
+                "score":"500"
+              },
+              {
+                "id":"3",
+                "email":"email3@yahoo.com",
+                "name":"Cristian Amariei",
+                "sex":"Male",
+                "country":"Hungary",
+                "score":"200"
+              }
+              ]
+      400:
+        body:
+          application/json:
+            example: |
+              {
+                "message":"This user doesn't exist"
+              }      
+  post:
+    description: The user can edit his profile
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                "email":"email2@yahoo.com",
+                "name":"Ion Ion Popescu",
+                "sex":"Male",
+                "country":"Germany"
+                }
+              ]  
+            schema: |
+              "$schema":"json-schema.org/draft-03/schema",
+              "type":"object",
+              "properties":
+              {
+                "email" : {"type":"string", "required":true},
+                "name":{"type":"string", "required":true},
+                "sex":{"type":"string", "required":false},
+                "country":{"type":"string", "required":false}
+              }
+      500:
+        body:
+          application/json:
+            example: |
+                {
+                  "message":"The profile could not be edited"
+                }
+/quiz:
+  displayName: Quiz
+  /top:
+    displayName: Top
+    get:
+      description: Get top users from quiz
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                "type":"array",
+                "items":
+                  [
+                  {
+                  "name":"User1",
+                  "score":"150"
+                  },
+                  {
+                  "name":"User2",
+                  "score":"130"
+                  }
+                    {
+                  "name":"User3",
+                  "score":"120"
+                  }
+                      {
+                   "name":"User4",
+                  "score":"70"
+                  }
+                      {
+                  "name":"User5",
+                  "score":"20"
+                  }
+                  
+                  ]
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                "message":"There are no entries in top"
+                }
+
+  /{quizID}:
+    displayName: QuizId
+    get:
+      description: Get a quiz with specific ID
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                "quizID":"1",
+                "type":"array",
+                "questions":
+                  [
+                    {
+                    "question":"Also known as a malignant tumor or malignant neoplasm, is a group of diseases involving abnormal cell growth with the potential to invade or spread to other parts of the body.Not all tumors are cancerous; benign tumors do not spread to other parts of the body",
+                    "answers":
+                      ["Obesity","Cancer","Diabetes","Stroke"],
+                    "correctAnswer":"Cancer"
+                    },
+                     {
+                    "question":"A medical condition in which excess body fat has accumulated to the extent that it may have a negative effect on health, leading to reduced life expectancy and/or increased health problems.",
+                    "answers":["Obesity","Cancer","Diabetes","Stroke"],
+                    "correctAnswer":"Obesity"
+                    },
+                      {
+                    "question":"Known as cerebrovascular accident (CVA), cerebrovascular insult (CVI), or brain attack, is when poor blood flow to the brain results in cell death",
+                    "answers":["Obesity","Cancer","Diabetes","Stroke"],
+                    "correctAnswer":"Stroke"
+                    },
+                     {
+                    "question":"A group of metabolic diseases in which there are high blood sugar levels over a prolonged period.[2] Symptoms of high blood sugar include frequent urination, increased thirst, and increased hunger",
+                    "answers":["Obesity","Cancer","Diabetes","Stroke"],
+                    "correctAnswer":"Diabetes"
+                    } 
+                  ]
+                },
+                
+      
+        
+    
+/search:
+  displayName: Search
+  description: Search by country or disease name
+  /countries/{countryName}:
+      displayName: Country
+      description: Search by country name
+      get:
+        responses:
+            200:
+              body:
+                application/json:
+                  example: |
+                    [
+                    {
+                      "countryName":"Romania",
+                      "diseases":["Tuberculosis","Cancer","HIV"]
+                    },
+                     {
+                      "countryName":"Germany",
+                      "diseases":["Hernia","Alcohol","Breast Cancer"]
+                    },
+                    ]
+            400:
+                body:
+                    application/json:
+                      example: |
+                        {
+                          "message":"This country doesn't exist in database"
+                        }
+  /disease/{diseaseName}:
+    displayName: Disease
+    description: Search by disease name
+    get:
+      responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                      "diseaseName":"Cancer",
+                      "diseases":["Colon Cancer","Cancer","Breast Cancer"]
+                  },
+          400:
+              body:
+                  application/json:
+                    example: |
+                        {
+                          "message":"This disease doesn't exist in database"
+                        }
+  
+                    
+          
+/disease/{diseaseName}:
+  displayName: Disease
+  description: View more details about a disease
+  get:
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                 "diseaseName":"Cancer",
+                 "description":"Cancer, also known as a malignant tumor or malignant neoplasm, is a group of diseases involving abnormal cell growth with the potential to invade or spread to other parts of the body.Not all tumors are cancerous; benign tumors do not spread to other parts of the body. Possible signs and symptoms include: a new lump, abnormal bleeding, a prolonged cough, unexplained weight loss, and a change in bowel movements among others. While these symptoms may indicate cancer, they may also occur due to other issues There are over 100 different known cancers that affect humans.",                  
+                }
+      400:
+        body:
+          application/json:
+            example: |
+                {
+                  "message":"The disease doesn't exist in database"
+                } 
+       
+  /map/{searchCriteria}/{value}:
+    displayName: Map     
+    description: Map with countries
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                 "diseaseName":"Cancer",
+                 "searchCriteria":"climate",
+                 "value":"temperate",
+                 "countries":["Romania","Germany"]
+                
+                }
+        400:
+          body:
+            application/json:
+              example: |
+                {
+                  "message":"The map couldn't be loaded. Please try again later."
+                } 
+                
+        

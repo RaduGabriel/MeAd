@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - MeAd</title>
+
+        <environment names="Development">
+            <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+            <link rel="stylesheet" href="~/lib/bootstrap-touch-carousel/dist/css/bootstrap-touch-carousel.css" />
+            <link rel="stylesheet" href="~/css/site.css" />
+            <link rel="stylesheet" href="~/css/datepicker3.css" />
+            @*<script src="~/js/jquery-1.9.1.min.js"></script>*@
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+        </environment>
+       
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a asp-controller="Home" asp-action="Index" class="navbar-brand">MeAd</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="About">About</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="Register">Register</a></li>
+                        <li><a href="#" id="login">Log in</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; 2016 - MeAd</p>
+            </footer>
+        </div>
+
+        <environment names="Development">
+        
+            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+            <script src="~/lib/hammer.js/hammer.js"></script>
+            <script src="~/lib/bootstrap-touch-carousel/dist/js/bootstrap-touch-carousel.js"></script>
+            
+            <script src="~/js/bootstrap-dialog/bootstrap-dialog.js"></script>
+            <script src="~/js/bootstrap-dialog/bootstrap-dialog.min.js"></script>
+            <script src="~/js/bootstrap-datepicker.js"></script>
+            <script src="~/js/jquery.validate.min.js"></script>
+        </environment>
+      
+
+        @RenderSection("scripts", required: false)
+    </body>
+</html>
+<script>
+
+    $(document).on('click', "#login", function (e) {
+
+
+
+        // alert(h1.value);
+        BootstrapDialog.show({
+            width:400,
+            title: "<div class='widget-header'><h4><i class='glyphicon glyphicon-log-in'></i> Login</h4></div>",
+            message: $('   <div class="hero-unit">\
+                                    <form method="POST" action="#" class="registration-form" id="contact-form"> \
+                                        <div class="form-group">\
+                                            <label class="sr-only" for="form-first-username">Username</label>\
+                                            <div class="controls">\
+                                                <input type="text" name="usernameLogin" placeholder="Username" class="form-username form-control" id="usernameLogin">\
+                                            </div>\
+                                        </div>\
+                                        <div class="form-group">\
+                                            <label class="sr-only" for="form-first-pass">Password</label>\
+                                            <div class="controls">\
+                                                <input type="password" name="password" placeholder="Password" class="form-password form-control" id="passLogin">\
+                                            </div>\
+                                        </div></form><p id="message-error"></p></div>'),
+            buttons: [{
+                label: 'Login',
+                cssClass: 'btn-primary',
+                hotkey: 13, // Enter.
+                action: function (dialogItself) {
+                    if (!$.trim($("#usernameLogin").val()) || !$.trim($("#passLogin").val()))
+                        $("#message-error").text("Please complete all the fields.");
+                    else
+                        $.ajax({
+                            type: "POST",
+                            url: '/Login',
+                            data: {
+                                username: $("#usernameLogin").val(),
+                                password: $("#passLogin").val()
+                            },
+                            success: function (data) {
+                                switch (data) {
+                                    case "-1":
+                                        $("#message-error").text("Username or password is incorrect.");
+                                        break;
+                                    case "1":
+                                        location.reload();
+                                        $("#message-error").text("You have been successfully logged in.");
+                                        dialogItself.close();
+                                        break;
+                                    default:
+                                        $("#message-error").text("You can't login right now. Please try again later.");
+                                        $("#message-error").text(data);
+                                        break;
+
+                                }
+                            }
+
+                        });
+
+                }
+            }
+            ,
+            {
+                label: 'Login with facebook',
+                cssClass: 'btn-primary',
+                hotkey: 13, // Enter.
+                action: function (dialogItself) {
+                    FB.login(function (response) {
+                        statusChangeCallback(response);
+                        console.log(response);
+                    }, { scope: 'public_profile,email' });
+                }
+            }]
+        });
+    });
+</script>

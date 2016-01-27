@@ -1,0 +1,10 @@
+{
+  "AppSettings": {
+    "SiteTitle": "MeAd"
+  },
+  "Data": {
+    "DefaultConnection": {
+      "ConnectionString": "Server=(localdb)\\mssqllocaldb;Database=aspnet5-MeAd-1a7ed094-ecda-4f00-9b17-a4583897a877;Trusted_Connection=True;MultipleActiveResultSets=true"
+    }
+  }
+}
