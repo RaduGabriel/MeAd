@@ -138,6 +138,13 @@ namespace MeAd.Controllers
            
         }
 
+        [HttpPost]
+        public string Logout()
+        {
+            Context.Session.SetInt32("on", 0);
+            return "1";
+        }
+
 
     }
 }

@@ -83,6 +83,36 @@
 </html>
 <script>
 
+
+    $(document).on('click', "#logout-btn", function (e) {
+
+        BootstrapDialog.show({
+            title: "<div class='widget-header'><h4><i class='glyphicon glyphicon-log-out'></i> Logout</h4></div>",
+            message: $('<p>Are you sure you want to log out ?</p>'),
+            buttons: [{
+                cssClass: 'btn-primary',
+                label: 'Yes',
+                action: function (dialog) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Logout',
+                        data: {
+                        },
+                        success: function (data) {
+                            location.reload();
+                        }
+                    });
+                }
+            }, {
+                cssClass: 'btn-primary',
+                label: 'No',
+                action: function (dialog) {
+                    dialog.close();
+                }
+            }]
+        })
+    });
+
     $(document).on('click', "#login", function (e) {
 
 
@@ -155,5 +185,7 @@
                 }
             }]
         });
+
+        
     });
 </script>
