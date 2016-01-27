@@ -16,8 +16,9 @@ namespace MeAd.Raml
 		/// <param name="countryName"></param>
         public IActionResult Get(string countryName)
         {
+
             // TODO: implement Get - route: search/countries/{countryName}
-			return new ObjectResult("");
+			return new ObjectResult(countryName);
         }
 
 		/// <summary>

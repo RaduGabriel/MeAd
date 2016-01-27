@@ -6,6 +6,7 @@ using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using MeAd.Models;
 using Microsoft.AspNet.Http;
+using Newtonsoft.Json;
 
 namespace MeAd.Controllers
 {
@@ -142,6 +143,8 @@ namespace MeAd.Controllers
         public string Logout()
         {
             Context.Session.SetInt32("on", 0);
+          
+
             return "1";
         }
 
