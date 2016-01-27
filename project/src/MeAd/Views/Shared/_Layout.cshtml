@@ -47,6 +47,20 @@
                     <li><a asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
+                <form class="search-form nav navbar-nav" method="GET" accept-charset="utf-8">
+                    <label class="search-form_label">
+                        <input  id="search-form" class="search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
+                        <span class="search-form_liveout"></span>
+                    </label>
+                    @*<button class="search-form_submit fa-search" type="submit"></button>*@
+                </form>
+                <ul class="results-search" style="display:none;">
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                    <li><a href=""></a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right" style="@hide2">
                     <li><a href="Register">Register</a></li>
                     <li><a href="#" id="login">Log in</a></li>
@@ -58,6 +72,7 @@
             </div>
         </div>
         <div class="container body-content">
+
             @RenderBody()
             <hr />
             <footer>
@@ -82,7 +97,48 @@
     </body>
 </html>
 <script>
+    $("#search-form").keypress(function (event) {
+        var key = $("#search-form").val() + String.fromCharCode(event.which);
+        if (key != null)
+            $.ajax({
+                type: "GET",
+                url: '/search/countries/'+key,
+                data: {
+                },
+                success: function (data) {
+                    $("ul[class='results-search']").css("display", "inherit");
+                    var count = 0;
+                    $.each(data, function (index, value) {
+                        count++;
+                        $("ul[class='results-search'] li:nth-child(" + count + ") a").text(value);
+                        $("ul[class='results-search'] li:nth-child(" + count + ") a").attr("href", "/title/" + index);
 
+                    });
+                    console.log(data);
+                }
+            });
+
+
+    });
+    $('#search-form').keyup(function (e) {
+        if (e.keyCode == 8) {
+            var key = $("#search-form").val() + String.fromCharCode(event.which);
+            if (key.length == 1) $("ul[class='results-search']").css("display", "none");
+            else
+                $.ajax({
+                    type: "GET",
+                    url: '/search/countries/' + key,
+                    data: {  
+                    },
+                    success: function (data) {
+                        var json = JSON.parse(data);
+                        json[""]
+                        console.log(json);
+                      
+                    }
+                });
+        }
+    })
 
     $(document).on('click', "#logout-btn", function (e) {
 

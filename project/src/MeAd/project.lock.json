@@ -3,6 +3,19 @@
   "version": -9996,
   "targets": {
     "DNX,Version=v4.5.1": {
+      "dotNetRDF/1.0.9.3683": {
+        "dependencies": {
+          "VDS.Common": "[1.6.0]",
+          "Newtonsoft.Json": "6.0.8",
+          "HtmlAgilityPack": "1.4.9"
+        },
+        "compile": {
+          "lib/net40/dotNetRDF.dll": {}
+        },
+        "runtime": {
+          "lib/net40/dotNetRDF.dll": {}
+        }
+      },
       "EntityFramework.Commands/7.0.0-beta5": {
         "dependencies": {
           "EntityFramework.Relational.Design": "7.0.0-beta5",
@@ -118,6 +131,14 @@
         },
         "runtime": {
           "lib/net45/EntityFramework.SqlServer.dll": {}
+        }
+      },
+      "HtmlAgilityPack/1.4.9": {
+        "compile": {
+          "lib/Net45/HtmlAgilityPack.dll": {}
+        },
+        "runtime": {
+          "lib/Net45/HtmlAgilityPack.dll": {}
         }
       },
       "Ix-Async/1.2.3": {
@@ -1615,10 +1636,47 @@
         "runtime": {
           "lib/portable-net45+win8/System.Reflection.Metadata.dll": {}
         }
+      },
+      "VDS.Common/1.6.0": {
+        "compile": {
+          "lib/net40-client/VDS.Common.dll": {}
+        },
+        "runtime": {
+          "lib/net40-client/VDS.Common.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "dotNetRDF/1.0.9.3683": {
+      "sha512": "JfLOrxwkIrwj/49p7nAIfdw5RxXdWuqjteueu3h3ON4mIp2Dbp404e5mI7mK2nCaouDsTqrsZC9KZ96lk0+xbw==",
+      "files": [
+        "dotNetRDF.1.0.9.3683.nupkg",
+        "dotNetRDF.1.0.9.3683.nupkg.sha512",
+        "dotNetRDF.nuspec",
+        "readme.txt",
+        "lib/net35/dotNetRDF.dll",
+        "lib/net35/dotNetRDF.pdb",
+        "lib/net35/dotNetRDF.xml",
+        "lib/net35-client/dotNetRDF.dll",
+        "lib/net35-client/dotNetRDF.pdb",
+        "lib/net35-client/dotNetRDF.xml",
+        "lib/net40/dotNetRDF.dll",
+        "lib/net40/dotNetRDF.pdb",
+        "lib/net40/dotNetRDF.xml",
+        "lib/net40-client/dotNetRDF.dll",
+        "lib/net40-client/dotNetRDF.pdb",
+        "lib/net40-client/dotNetRDF.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/dotNetRDF.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/dotNetRDF.pdb",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/dotNetRDF.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/Portable.Runtime.dll",
+        "lib/sl4/dotNetRDF.dll",
+        "lib/sl4/dotNetRDF.xml",
+        "lib/sl4-wp/dotNetRDF.dll",
+        "lib/sl4-wp/dotNetRDF.xml"
+      ]
+    },
     "EntityFramework.Commands/7.0.0-beta5": {
       "serviceable": true,
       "sha512": "TFfcJ6hVXY5XleybC/zAgcudMZXdHo34AjqRPdZLLH1RoCFZdqvGWLiE04tKKgJ0Mh8LcOgrzHLzKikpXBZ31A==",
@@ -1702,6 +1760,43 @@
         "lib/dnxcore50/EntityFramework.SqlServer.xml",
         "lib/net45/EntityFramework.SqlServer.dll",
         "lib/net45/EntityFramework.SqlServer.xml"
+      ]
+    },
+    "HtmlAgilityPack/1.4.9": {
+      "sha512": "anZIsi7bbHZ35ZZzvCA+gVWC/mEXVhcJjJvxr3wzUEDsOE4uk0Fa0ZiaxVn83AZpVKVO4RHyqamPkzzJbMUgmQ==",
+      "files": [
+        "HAPIcon.png",
+        "HtmlAgilityPack.1.4.9.nupkg",
+        "HtmlAgilityPack.1.4.9.nupkg.sha512",
+        "HtmlAgilityPack.nuspec",
+        "readme.txt",
+        "lib/Net20/HtmlAgilityPack.dll",
+        "lib/Net20/HtmlAgilityPack.pdb",
+        "lib/Net20/HtmlAgilityPack.xml",
+        "lib/Net40/HtmlAgilityPack.dll",
+        "lib/Net40/HtmlAgilityPack.pdb",
+        "lib/Net40/HtmlAgilityPack.XML",
+        "lib/Net40-client/HtmlAgilityPack.dll",
+        "lib/Net40-client/HtmlAgilityPack.pdb",
+        "lib/Net40-client/HtmlAgilityPack.xml",
+        "lib/Net45/HtmlAgilityPack.dll",
+        "lib/Net45/HtmlAgilityPack.pdb",
+        "lib/Net45/HtmlAgilityPack.XML",
+        "lib/NetCore45/HtmlAgilityPack.dll",
+        "lib/NetCore45/HtmlAgilityPack.pdb",
+        "lib/NetCore45/HtmlAgilityPack.pri",
+        "lib/NetCore45/HtmlAgilityPack.xml",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
+        "lib/portable-net45+netcore45+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.dll",
+        "lib/portable-net45+netcore45+wpa81+wp8+MonoAndroid+MonoTouch/HtmlAgilityPack.pdb",
+        "lib/sl3-wp/_._",
+        "lib/sl4/HtmlAgilityPack.dll",
+        "lib/sl4/HtmlAgilityPack.pdb",
+        "lib/sl4/HtmlAgilityPack.XML",
+        "lib/sl5/HtmlAgilityPack.dll",
+        "lib/sl5/HtmlAgilityPack.pdb",
+        "lib/sl5/HtmlAgilityPack.XML"
       ]
     },
     "Ix-Async/1.2.3": {
@@ -2473,7 +2568,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Analyzers/1.0.0-rc3": {
-      "sha512": "+IAgIbixhE1YdjviBfJhQ8oS9Xc+gYabKYJi5T46RnhCtC67ZQ133ebrnLLpocx2DfTPx4GdNkGt+XRfFbcF5Q==",
+      "sha512": "K+Vgi95hm/sorMO3M4JybasGbNv2ISDJMMFZsObSlozOK2maJosyLMQWAo0ZmJaqKd43CPzwhQB3MZMh6Hfnpw==",
       "files": [
         "Microsoft.CodeAnalysis.Analyzers.1.0.0-rc3.nupkg",
         "Microsoft.CodeAnalysis.Analyzers.1.0.0-rc3.nupkg.sha512",
@@ -2488,7 +2583,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.Common/1.0.0-rc3": {
-      "sha512": "7EdIn8+hBhoTnrosydREV22RZmqB5jDFfNSjlpsrV9S1BSJtRPhhKdt2aAgIF0K6grsdlsP8j+UFxpEHKNDWvQ==",
+      "sha512": "sON3pTdJhYzdn/LQ8bak9dNqR3EE+4FzOdxaX0lG6z4vdi0PYRZRtd5ezkdZq/mb9QIf4HFQgT7wAxd0Qzx1Eg==",
       "files": [
         "Microsoft.CodeAnalysis.Common.1.0.0-rc3.nupkg",
         "Microsoft.CodeAnalysis.Common.1.0.0-rc3.nupkg.sha512",
@@ -2501,7 +2596,7 @@
       ]
     },
     "Microsoft.CodeAnalysis.CSharp/1.0.0-rc3": {
-      "sha512": "zG7yPqO6BDq6pPOg0pno8MV7ijiFuYMh6rETuSFp0p9nVWRhoVaVj4sgTVZ3dYyRQqiaSVAeEvOk0vLyCPCLMA==",
+      "sha512": "HA7zSHvHhc6E0uG87EAglgCMAqrRdgK3BYHVoOA0ZPoQ/V60FtU3/w599uQ/QsJ09ufMwP6CvFp0m3IBiM/GTw==",
       "files": [
         "Microsoft.CodeAnalysis.CSharp.1.0.0-rc3.nupkg",
         "Microsoft.CodeAnalysis.CSharp.1.0.0-rc3.nupkg.sha512",
@@ -2971,7 +3066,7 @@
       ]
     },
     "Microsoft.VisualStudio.Web.BrowserLink.Loader/14.0.0-beta5": {
-      "sha512": "O4S+wvsm7j0/JbsP7Ol1cg99qPOXt4c2UMdegdZUKkQBxu0dMooWdHRoLQM+MJi/DP3YrEVLjRK8NXjZpZSEIg==",
+      "sha512": "qKyw00koXSuLRKI+GOkdHn9FyuE21R93GZyWmVJZYXg4scb2ki3NlGT954mEVxx5WN4yqRqywe2Rc+4MSqbq1w==",
       "files": [
         "Microsoft.VisualStudio.Web.BrowserLink.Loader.14.0.0-beta5.nupkg",
         "Microsoft.VisualStudio.Web.BrowserLink.Loader.14.0.0-beta5.nupkg.sha512",
@@ -3070,6 +3165,23 @@
         "lib/portable-net45+win8/System.Reflection.Metadata.dll",
         "lib/portable-net45+win8/System.Reflection.Metadata.xml"
       ]
+    },
+    "VDS.Common/1.6.0": {
+      "sha512": "TY/hi+Ztq06D3txNqdl64DvrpVCd0qruQwwrLqNDg8qilY+3jARAatiNvzK7ryLLMCb4RfgXZyXMllj9JcL0Mg==",
+      "files": [
+        "VDS.Common.1.6.0.nupkg",
+        "VDS.Common.1.6.0.nupkg.sha512",
+        "VDS.Common.nuspec",
+        "lib/net35-client/VDS.Common.dll",
+        "lib/net35-client/VDS.Common.pdb",
+        "lib/net35-client/VDS.Common.xml",
+        "lib/net40-client/VDS.Common.dll",
+        "lib/net40-client/VDS.Common.pdb",
+        "lib/net40-client/VDS.Common.xml",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/VDS.Common.dll",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/VDS.Common.pdb",
+        "lib/portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1/VDS.Common.xml"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -3100,7 +3212,8 @@
       "Microsoft.Net.Http >= 2.2.29",
       "RAML.Api.Core >= 0.9.7",
       "MySql.Data >= 6.9.8",
-      "Microsoft.AspNet.Session >= 1.0.0-beta5"
+      "Microsoft.AspNet.Session >= 1.0.0-beta5",
+      "dotNetRDF >= 1.0.9.3683"
     ],
     "DNX,Version=v4.5.1": []
   }

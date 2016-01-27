@@ -29,8 +29,9 @@
         "Newtonsoft.Json": "6.0.4",
         "Microsoft.Net.Http": "2.2.29",
         "RAML.Api.Core": "0.9.7",
-      "MySql.Data": "6.9.8",
-      "Microsoft.AspNet.Session": "1.0.0-beta5"
+        "MySql.Data": "6.9.8",
+        "Microsoft.AspNet.Session": "1.0.0-beta5",
+        "dotNetRDF": "1.0.9.3683"
     },
 
     "commands": {
@@ -40,7 +41,7 @@
 
     "frameworks": {
         "dnx451": { }
-       
+
     },
 
     "exclude": [
