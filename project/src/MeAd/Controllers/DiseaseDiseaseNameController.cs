@@ -71,32 +71,28 @@ namespace MeAd.Raml
                 try {
                     results = endpoint2.QueryWithResultSet(query);
                 }catch(Exception e) { return new ObjectResult(query); }
-                if (results.IsEmpty)
-                {
-                    resultsObject.Add("Speciality", "Na");
-                }
-                else {
+               
                     result = results[0];
                     try
                     {
                         string speciality = result["speciality"].ToString();
-                        resultsObject.Add("Speciality", speciality.Substring(0,speciality.Length-3));
+                        resultsObject.Add("speciality", speciality.Substring(0,speciality.Length-3));
                     }
                     catch(Exception e)
                     {
-                        resultsObject.Add("Speciality", "na");
+                        resultsObject.Add("speciality", "na");
                     }
 
                     try
                     {
                         string abstr = result["abstract"].ToString();
-                        resultsObject.Add("Abstract", abstr.Substring(0, abstr.Length - 3));
+                        resultsObject.Add("abstract", abstr.Substring(0, abstr.Length - 3));
                     }
                     catch (Exception e)
                     {
-                        resultsObject.Add("Speciality", "na");
+                        resultsObject.Add("abstract", "na");
                     }
-                }
+                
 
             }
             // TODO: implement Get - route: search/countries/{countryName}
