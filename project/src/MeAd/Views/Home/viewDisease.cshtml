@@ -5,23 +5,45 @@
     // ViewBag.Title = "Home Page";
     Dictionary<string,string> dic = ViewBag.api as Dictionary<string, string>;
 
-
+    string symptoms = ViewBag.symptoms;
 
 }
 
 
+<form method="GET" accept-charset="utf-8">
+    <label class="search-form_label">
+        <input id="search-form" class="search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
+        <span class="search-form_liveout"></span>
+    </label>
+    @*<select id="search-by" name="search">
+            <option value="0" selected="">Search by Disease</option>
+            <option value="1">Search by Country</option>
+        </select>*@
 
-<script>
+</form>
+<ul class="results-search" style="display:none;">
+    <li><a href=""></a></li>
+    <li><a href=""></a></li>
+    <li><a href=""></a></li>
+    <li><a href=""></a></li>
+    <li><a href=""></a></li>
+</ul>
+<span id="no-result" style="display:none;">No results found</span>
 
-</script>
 
-
-
+@if (ViewBag.diseaseExists == "true")
+{
 
 <h2>@dic["name"]</h2>
-<h3>Speciality: @dic["speciality"]</h3>
-<h3>Id: @dic["id"]</h3>
-<h3>Abstract: @dic["abstract"]</h3>
+<h4>Speciality:<span style="font-weight:normal; font-size: 17px;"> @dic["speciality"]</span></h4><br />
+<h4>Id:<span style="font-weight:normal; font-size: 17px;"> @dic["id"]</span></h4><br />
+<h4>Abstract: <span style="font-weight:normal; font-size: 17px;">@dic["abstract"]</span></h4><br/>
 
-<p>Use this area to provide additional information.</p>
+<h4>Symptoms: <span style="font-weight:normal; font-size: 17px;">@Html.Raw(symptoms)</span></h4>
+}
+else if(ViewBag.error=="true") 
+{ <h3>Something went wrong. Please try again later</h3>}
+else if (ViewBag.diseaseExists == "false")
+{ <h3>This disease doesn't exist. Please try another one.</h3>}
+
 

@@ -8,6 +8,8 @@ using MeAd.Models;
 using Microsoft.AspNet.Http;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Net;
+using System.IO;
 
 namespace MeAd.Controllers
 {
@@ -20,11 +22,43 @@ namespace MeAd.Controllers
 
         public IActionResult viewDisease(string diseaseName)
         {
-            ObjectResult obj = (ObjectResult)new MeAd.Raml.DiseaseDiseaseNameController().Get(diseaseName);
-            Dictionary<string,string> apil =(Dictionary<string,string>) obj.Value;
-            apil["name"] = apil["name"].Replace("%20"," ");
-            ViewBag.api = apil;
-           
+            ViewBag.error = "false";
+            ViewBag.diseaseExists = "false";
+            try
+            {
+                ObjectResult obj = (ObjectResult)new MeAd.Raml.DiseaseDiseaseNameController().Get(diseaseName);
+                Dictionary<string, string> apil = (Dictionary<string, string>)obj.Value;
+
+                
+                if (apil.Count != 0)
+                {
+                    ViewBag.diseaseExists = "true";
+                    apil["name"] = apil["name"].Replace("%20", " ");
+                    ViewBag.api = apil;
+
+
+                    string url = "http://www.wikidoc.org/api.php?action=query&titles=" + diseaseName + "_(patient_information)&export&contentformat=text/plaino";
+
+
+
+                    try
+                    {
+                        WebRequest wrGETURL;
+                        wrGETURL = WebRequest.Create(url);
+                        Stream objStream;
+                        objStream = wrGETURL.GetResponse().GetResponseStream();
+
+                        StreamReader objReader = new StreamReader(objStream);
+                        string content = objReader.ReadToEnd();
+                        string[] split = content.Split(new string[] { "==" }, StringSplitOptions.None);
+                        string symptoms = split[4].Replace("\\n", "<br/>").Replace(":*", "").Replace("*","").Replace("[[", "").Replace("]]", "");
+                        ViewBag.symptoms = symptoms;
+                    }
+                    catch
+                    { ViewBag.symptoms = "N.A."; }
+                }
+            }
+            catch { ViewBag.error = "true"; }
             return View();
         }
 

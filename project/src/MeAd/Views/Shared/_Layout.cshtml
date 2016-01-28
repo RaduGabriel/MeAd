@@ -115,8 +115,8 @@
                     var json = [];
                     $.each(data, function (index, value) {
 
-                        var name = value.replace(" ", "_");
-                        name = name.replace("%20","_");
+                        var name = value.replace(/ /g, "_");
+                        
                         json.push({ "ID": name, "label": value });
                         
                     });
@@ -168,8 +168,7 @@
                         var count = 0;
                         var json = [];
                         $.each(data, function (index, value) {
-                            var name = value.replace(" ", "_");
-                            name = name.replace("%20","_")
+                            var name = value.replace(/ /g, "_");
                             json.push({ "ID": name, "label": value });
                             count++;
                             //var name = value.replace(" ", "_");
