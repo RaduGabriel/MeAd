@@ -31,8 +31,8 @@ namespace MeAd.Raml
                                                                     ?ID wdt:P699 ?doid .
                                                                     ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
 
-                                                                                filter regex(str(?disease), '" + objectName + "' )}" +
-                                                                       " ORDER by ASC(?disease) limit 4");
+                                                                                filter regex(lcase(str(?disease)), lcase('" + objectName + "') )}" +
+                                                                       " ORDER by ASC(lcase(?disease)) limit 50");
                 foreach (SparqlResult result in results)
                 {
                     string id = result["ID"].ToString();
