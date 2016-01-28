@@ -116,6 +116,7 @@
                     $.each(data, function (index, value) {
 
                         var name = value.replace(" ", "_");
+                        name = name.replace("%20","_");
                         json.push({ "ID": name, "label": value });
                         
                     });
@@ -126,7 +127,7 @@
                     }).data( "ui-autocomplete" )._renderItem = function( ul, item ) {
                         return $( "<li>" )
                           .data( "ui-autocomplete-item", item )
-                          .append("<a href='/disease/" + item.ID + "'>" + item.label + "</a>")
+                          .append("<a href='/viewDisease/" + item.ID + "'>" + item.label + "</a>")
                           .appendTo( ul );
                     };
                     //for (var i = count + 1; i <= 5; i++) {
@@ -168,6 +169,7 @@
                         var json = [];
                         $.each(data, function (index, value) {
                             var name = value.replace(" ", "_");
+                            name = name.replace("%20","_")
                             json.push({ "ID": name, "label": value });
                             count++;
                             //var name = value.replace(" ", "_");
@@ -189,7 +191,7 @@
                         }).data("ui-autocomplete")._renderItem = function (ul, item) {
                             return $("<li>")
                               .data("ui-autocomplete-item", item)
-                              .append("<a href='/disease/" + item.ID + "'>" + item.label + "</a>")
+                              .append("<a href='/viewDisease/" + item.ID + "'>" + item.label + "</a>")
                               .appendTo(ul);
                         };
                        // console.log(data);

@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using MeAd.Models;
 using Microsoft.AspNet.Http;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace MeAd.Controllers
 {
@@ -17,8 +18,13 @@ namespace MeAd.Controllers
             return View();
         }
 
-        public IActionResult viewDisease(string id)
+        public IActionResult viewDisease(string diseaseName)
         {
+            ObjectResult obj = (ObjectResult)new MeAd.Raml.DiseaseDiseaseNameController().Get(diseaseName);
+            Dictionary<string,string> apil =(Dictionary<string,string>) obj.Value;
+            apil["name"] = apil["name"].Replace("%20"," ");
+            ViewBag.api = apil;
+           
             return View();
         }
 

@@ -20,7 +20,8 @@ namespace MeAd.Raml
             Dictionary<string, string> resultsObject = new Dictionary<string, string>();
             if (diseaseName.Length> 0)
             {
-                diseaseName = diseaseName.Replace("%20", " ");
+                  diseaseName = diseaseName.Replace("%20", " ");
+                diseaseName = diseaseName.Replace("_", " ");
 
                 SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("https://query.wikidata.org/sparql"), "https://query.wikidata.org");
 
@@ -39,7 +40,7 @@ namespace MeAd.Raml
                                               FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
                                             }
 
-                                        filter regex(str(?disease), '^cancer$' )}" +
+                                        filter regex(str(?disease), '^"+diseaseName+"$' )}" +
                                 "ORDER by ASC((?disease)) limit 1";
 
                     SparqlResultSet results = endpoint.QueryWithResultSet(query);
@@ -58,11 +59,13 @@ namespace MeAd.Raml
 
                 // richTextBox1.Text += wikidata_id + "\n";
                 SparqlRemoteEndpoint endpoint2 = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"), "http://dbpedia.org");
-               
+
+                string wikidbname = name.Replace("%20", "_");
+                wikidbname = wikidbname.Replace(" ","_");
                 query = @"SELECT ?speciality ?abstract WHERE {  "+
-                        "<http://dbpedia.org/resource/" + name + "> <http://dbpedia.org/property/field> ?specID . "+
-                        "<http://dbpedia.org/resource/"+name+"> <http://dbpedia.org/ontology/abstract> ?abstract. "+
-                        "?specID rdfs:label ?speciality. " +
+                        "OPTIONAL { <http://dbpedia.org/resource/" + wikidbname + "> <http://dbpedia.org/property/field> ?specID . "+
+                        "?specID rdfs:label ?speciality. }" +
+                        "OPTIONAL { <http://dbpedia.org/resource/" + wikidbname + "> <http://dbpedia.org/ontology/abstract> ?abstract. }"+      
                         "filter(langMatches(lang(?speciality), 'EN'))  " +
                         "filter(langMatches(lang(?abstract), 'EN'))" +
                         "} limit 1";
@@ -71,32 +74,32 @@ namespace MeAd.Raml
                 try {
                     results = endpoint2.QueryWithResultSet(query);
                 }catch(Exception e) { return new ObjectResult(query); }
-                if (results.IsEmpty)
+                try {
+                    result = results[0]; }
+                catch(Exception e)
                 {
-                    resultsObject.Add("Speciality", "Na");
+                    return new ObjectResult("Query inexistent"+query);
                 }
-                else {
-                    result = results[0];
                     try
                     {
                         string speciality = result["speciality"].ToString();
-                        resultsObject.Add("Speciality", speciality.Substring(0,speciality.Length-3));
+                        resultsObject.Add("speciality", speciality.Substring(0,speciality.Length-3));
                     }
                     catch(Exception e)
                     {
-                        resultsObject.Add("Speciality", "na");
+                        resultsObject.Add("speciality", "na");
                     }
 
                     try
                     {
                         string abstr = result["abstract"].ToString();
-                        resultsObject.Add("Abstract", abstr.Substring(0, abstr.Length - 3));
+                        resultsObject.Add("abstract", abstr.Substring(0, abstr.Length - 3));
                     }
                     catch (Exception e)
                     {
-                        resultsObject.Add("Speciality", "na");
+                        resultsObject.Add("abstract", "na");
                     }
-                }
+                
 
             }
             // TODO: implement Get - route: search/countries/{countryName}
