@@ -32,7 +32,7 @@ namespace MeAd.Raml
                                                                     ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
 
                                                                                 filter regex(str(?disease), '" + objectName + "' )}" +
-                                                                       " limit 5");
+                                                                       " ORDER by ASC(?disease) limit 4");
                 foreach (SparqlResult result in results)
                 {
                     string id = result["ID"].ToString();
