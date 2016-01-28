@@ -167,9 +167,9 @@ baseUri: http://mocksvc.mulesoft.com/mocks/01beac3d-861b-4be9-ae94-47672354c991/
 /search:
   displayName: Search
   description: Search by country or disease name
-  /countries/{countryName}:
+  /name/{objectName}/{type}:
       displayName: Country
-      description: Search by country name
+      description: Search by country name or disease name
       get:
         responses:
             200:
@@ -192,26 +192,6 @@ baseUri: http://mocksvc.mulesoft.com/mocks/01beac3d-861b-4be9-ae94-47672354c991/
                       example: |
                         {
                           "message":"This country doesn't exist in database"
-                        }
-  /disease/{diseaseName}:
-    displayName: Disease
-    description: Search by disease name
-    get:
-      responses:
-          200:
-            body:
-              application/json:
-                example: |
-                  {
-                      "diseaseName":"Cancer",
-                      "diseases":["Colon Cancer","Cancer","Breast Cancer"]
-                  },
-          400:
-              body:
-                  application/json:
-                    example: |
-                        {
-                          "message":"This disease doesn't exist in database"
                         }
   
                     

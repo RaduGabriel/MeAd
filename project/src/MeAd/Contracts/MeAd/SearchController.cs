@@ -15,27 +15,16 @@ namespace MeAd.Raml
 
 
         /// <summary>
-		/// Search by country name - Country
+		/// Search by country name or disease name - Country
 		/// </summary>
-		/// <param name="countryName"></param>
+		/// <param name="objectName"></param>
+		/// <param name="type"></param>
         [HttpGet]
-        [Route("countries/{countryName}")]
-        public virtual IActionResult GetBase(string countryName)
+        [Route("name/{objectName}/{type}")]
+        public virtual IActionResult GetBase(string objectName,string type)
         {
             // Do not modify this code
-            return  ((ISearchController)this).Get(countryName);
-        }
-
-        /// <summary>
-		/// Search by disease name - Disease
-		/// </summary>
-		/// <param name="diseaseName"></param>
-        [HttpGet]
-        [Route("disease/{diseaseName}")]
-        public virtual IActionResult GetDiseaseByDiseaseNameBase(string diseaseName)
-        {
-            // Do not modify this code
-            return  ((ISearchController)this).GetDiseaseByDiseaseName(diseaseName);
+            return  ((ISearchController)this).Get(objectName,type);
         }
     }
 }

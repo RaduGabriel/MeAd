@@ -11,7 +11,6 @@ namespace MeAd.Raml
     public interface ISearchController
     {
 
-        IActionResult Get(string countryName);
-        IActionResult GetDiseaseByDiseaseName(string diseaseName);
+        IActionResult Get(string objectName,string type);
     }
 }

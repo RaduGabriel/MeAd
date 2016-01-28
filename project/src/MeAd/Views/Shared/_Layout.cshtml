@@ -47,66 +47,61 @@
                     <li><a asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
-                <form class="search-form nav navbar-nav" method="GET" accept-charset="utf-8">
-                    <label class="search-form_label">
-                        <input  id="search-form" class="search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
-                        <span class="search-form_liveout"></span>
-                    </label>
-                    @*<button class="search-form_submit fa-search" type="submit"></button>*@
-                </form>
-                <ul class="results-search" style="display:none;">
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                    <li><a href=""></a></li>
-                </ul>
+                
                 <ul class="nav navbar-nav navbar-right" style="@hide2">
                     <li><a href="Register">Register</a></li>
                     <li><a href="#" id="login">Log in</a></li>
                 </ul>
                 <div class="nav navbar-nav navbar-right" id="logout" style="@hide;">
-                     Welcome <strong>@username</strong>! <a id="logout-btn" href="#">Logout</a>
-                    </div>
+                    Welcome <strong>@username</strong>! <a id="logout-btn" href="#">Logout</a>
                 </div>
             </div>
         </div>
-        <div class="container body-content">
+    </div>
+    <div class="container body-content">
 
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; 2016 - MeAd</p>
-            </footer>
-        </div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; 2016 - MeAd</p>
+        </footer>
+    </div>
 
-        <environment names="Development">
+    <environment names="Development">
 
-            <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-            <script src="~/lib/hammer.js/hammer.js"></script>
-            <script src="~/lib/bootstrap-touch-carousel/dist/js/bootstrap-touch-carousel.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/hammer.js/hammer.js"></script>
+        <script src="~/lib/bootstrap-touch-carousel/dist/js/bootstrap-touch-carousel.js"></script>
 
-            <script src="~/js/bootstrap-dialog/bootstrap-dialog.js"></script>
-            <script src="~/js/bootstrap-dialog/bootstrap-dialog.min.js"></script>
-            <script src="~/js/bootstrap-datepicker.js"></script>
-            <script src="~/js/jquery.validate.min.js"></script>
-        </environment>
+        <script src="~/js/bootstrap-dialog/bootstrap-dialog.js"></script>
+        <script src="~/js/bootstrap-dialog/bootstrap-dialog.min.js"></script>
+        <script src="~/js/bootstrap-datepicker.js"></script>
+        <script src="~/js/jquery.validate.min.js"></script>
+    </environment>
 
 
-        @RenderSection("scripts", required: false)
-    </body>
+    @RenderSection("scripts", required: false)
+</body>
 </html>
 <script>
     $("#search-form").keypress(function (event) {
         var key = $("#search-form").val() + String.fromCharCode(event.which);
+        var type = $("#search-by").val();
         if (key != null)
             $.ajax({
                 type: "GET",
-                url: '/search/countries/'+key,
+                url: '/search/name/' + key+'/'+type,
                 data: {
                 },
                 success: function (data) {
-                    $("ul[class='results-search']").css("display", "inherit");
+                    if (Object.keys(data).length != 0) {
+                        $("span[id='no-result']").css("display", "none");
+                        $("ul[class='results-search']").css("display", "inherit");
+                    }
+                    else {
+                        $("ul[class='results-search']").css("display", "none");
+                        $("span[id='no-result']").css("display", "inherit");
+                    }
                     var count = 0;
                     $.each(data, function (index, value) {
                         count++;
@@ -123,20 +118,25 @@
     $('#search-form').keyup(function (e) {
         if (e.keyCode == 8) {
             var key = $("#search-form").val() + String.fromCharCode(event.which);
+            key = key.replace("%08", '');
+            console.log(key);
+            var type = $("#search-by").val();
             if (key.length == 1) $("ul[class='results-search']").css("display", "none");
-            else
+            else {
+              
                 $.ajax({
                     type: "GET",
-                    url: '/search/countries/' + key,
-                    data: {  
+                    url: '/search/name/' + key + '/' + type,
+                    data: {
                     },
                     success: function (data) {
                         var json = JSON.parse(data);
                         json[""]
                         console.log(json);
-                      
+
                     }
                 });
+            }
         }
     })
 
@@ -153,10 +153,10 @@
                         type: "POST",
                         url: '/Logout',
                         data: {
-                            
+
                         },
                         success: function (data) {
-                           
+
                             location.reload();
                         }
                     });
@@ -244,6 +244,6 @@
             }]
         });
 
-        
+
     });
 </script>
