@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using VDS.RDF.Query;
 
 namespace MeAd.Raml
 {
@@ -16,8 +17,93 @@ namespace MeAd.Raml
 		/// <param name="diseaseName"></param>
         public IActionResult Get(string diseaseName)
         {
+            Dictionary<string, string> resultsObject = new Dictionary<string, string>();
+            if (diseaseName.Length> 0)
+            {
+                diseaseName = diseaseName.Replace("%20", " ");
+
+                SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("https://query.wikidata.org/sparql"), "https://query.wikidata.org");
+
+                string query = @" PREFIX entity: <http://www.wikidata.org/entity/> 
+                                    PREFIX p: <http://www.wikidata.org/prop/direct/>
+                                    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+                                    prefix schema: <http://schema.org/>
+
+                                    SELECT ?ID ?disease ?wikiID WHERE {
+                                    ?ID wdt:P699 ?doid .
+                                    ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
+                                                                    
+                                     OPTIONAL {
+                                              ?wikiID schema:about ?ID.
+                                              ?wikiID schema:inLanguage 'en' .
+                                              FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
+                                            }
+
+                                        filter regex(str(?disease), '^cancer$' )}" +
+                                "ORDER by ASC((?disease)) limit 1";
+
+                    SparqlResultSet results = endpoint.QueryWithResultSet(query);
+                    SparqlResult result = results[0];
+                
+                    string id = result["ID"].ToString().Substring(31);
+                    string wikiLink = result["wikiID"].ToString();
+                string name = diseaseName;
+                if (wikiLink.Length > 0 && wikiLink.Contains("/"))
+                {
+                    name = wikiLink.Substring(wikiLink.LastIndexOf("/")+1,wikiLink.Length-wikiLink.LastIndexOf("/")-1);
+                    resultsObject.Add("name", name);
+                }
+                    resultsObject.Add("id", id);
+                   
+
+                // richTextBox1.Text += wikidata_id + "\n";
+                SparqlRemoteEndpoint endpoint2 = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"), "http://dbpedia.org");
+               
+                query = @"SELECT ?speciality ?abstract WHERE {  "+
+                        "<http://dbpedia.org/resource/" + name + "> <http://dbpedia.org/property/field> ?specID . "+
+                        "<http://dbpedia.org/resource/"+name+"> <http://dbpedia.org/ontology/abstract> ?abstract. "+
+                        "?specID rdfs:label ?speciality. " +
+                        "filter(langMatches(lang(?speciality), 'EN'))  " +
+                        "filter(langMatches(lang(?abstract), 'EN'))" +
+                        "} limit 1";
+
+              
+                try {
+                    results = endpoint2.QueryWithResultSet(query);
+                }catch(Exception e) { return new ObjectResult(query); }
+                if (results.IsEmpty)
+                {
+                    resultsObject.Add("Speciality", "Na");
+                }
+                else {
+                    result = results[0];
+                    try
+                    {
+                        string speciality = result["speciality"].ToString();
+                        resultsObject.Add("Speciality", speciality.Substring(0,speciality.Length-3));
+                    }
+                    catch(Exception e)
+                    {
+                        resultsObject.Add("Speciality", "na");
+                    }
+
+                    try
+                    {
+                        string abstr = result["abstract"].ToString();
+                        resultsObject.Add("Abstract", abstr.Substring(0, abstr.Length - 3));
+                    }
+                    catch (Exception e)
+                    {
+                        resultsObject.Add("Speciality", "na");
+                    }
+                }
+
+            }
+            // TODO: implement Get - route: search/countries/{countryName}
+
+            return new ObjectResult(resultsObject);
             // TODO: implement Get - route: disease/{diseaseName}/
-			return new ObjectResult("");
+            
         }
 
 		/// <summary>

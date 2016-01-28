@@ -146,6 +146,8 @@ namespace MeAd
                 routes.MapRoute("RegisterUser", "RegisterUser", new { controller = "Home", action = "RegisterUser" });
                 routes.MapRoute("Logout", "Logout", new { controller = "Home", action = "Logout" });
                 routes.MapRoute("search/countries", "search/countries/{countryName}", new { controller = "Home", action = "search/countries" });
+                routes.MapRoute("viewDisease", "viewDisease/{id}", new { controller = "Home", action = "viewDisease" });
+
             });
 
 
