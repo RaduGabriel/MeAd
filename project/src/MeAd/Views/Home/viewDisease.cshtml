@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    // ViewBag.Title = "Home Page";
+    Dictionary<string,string> dic = ViewBag.api as Dictionary<string, string>;
+
+
+
+}
+
+
+
+<script>
+
+</script>
+
+
+
+
+<h2>@dic["name"]</h2>
+<h3>Speciality: @dic["speciality"]</h3>
+<h3>Id: @dic["id"]</h3>
+<h3>Abstract: @dic["abstract"]</h3>
+
+<p>Use this area to provide additional information.</p>
+
