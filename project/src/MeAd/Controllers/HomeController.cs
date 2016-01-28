@@ -17,6 +17,11 @@ namespace MeAd.Controllers
             return View();
         }
 
+        public IActionResult disease(string id)
+        {
+            return View();
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
