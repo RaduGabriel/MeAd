@@ -18,18 +18,13 @@ namespace MeAd.Controllers
             return View();
         }
 
-        public IActionResult viewDisease(string name)
+        public IActionResult viewDisease(string diseaseName)
         {
-            var api = new MeAd.Raml.DiseaseDiseaseNameController().Get(name);
-            Dictionary<string, string> results = new Dictionary<string, string>;
-
-            foreach (KeyValuePair<string,string> result in results){
-                results.Add(result.Key, result.Value);
-            }
-            ViewBag.name = results["name"];
-            ViewBag.abstr = results["abstract"];
-            ViewBag.id = results["id"];
-            ViewBag.speciality = results["speciality"];
+            ObjectResult obj = (ObjectResult)new MeAd.Raml.DiseaseDiseaseNameController().Get(diseaseName);
+            Dictionary<string,string> apil =(Dictionary<string,string>) obj.Value;
+            apil["name"] = apil["name"].Replace("%20"," ");
+            ViewBag.api = apil;
+           
             return View();
         }
 
