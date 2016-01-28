@@ -17,7 +17,7 @@ namespace MeAd.Controllers
             return View();
         }
 
-        public IActionResult disease(string id)
+        public IActionResult viewDisease(string id)
         {
             return View();
         }
