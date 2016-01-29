@@ -77,6 +77,7 @@ else if (ViewBag.diseaseExists == "false")
 
 
     $(document).ready(function () {
+
         $.ajax({
             type: "POST",
             url: '/getCountriesDisease',
@@ -118,7 +119,7 @@ else if (ViewBag.diseaseExists == "false")
 
                     mapData[i].value = value;
                     goodData.push(mapData[i]);
-                    console.log(mapData[i].value);
+               //     console.log(mapData[i].value);
                 }
                 
                

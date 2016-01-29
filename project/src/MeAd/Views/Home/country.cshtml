@@ -1,0 +1,85 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+// ViewBag.Title = "Home Page";
+}
+<link rel="stylesheet" href="~/css/map/ammap.css" />
+<script src="~/js/map/ammap.js"></script>
+<script src="~/js/map/worldLow.js"></script>
+<script src="~/js/map/black.js"></script>
+
+@if (ViewBag.countryExists == "false")
+{
+    <span style="font-size:16px;">This country doesn't exist. Please choose another one</span>
+}
+else
+{
+
+    <h3>Country: @ViewBag.country</h3>
+    <span class="data-info"><strong>Climate: </strong>@ViewBag.climate</span><br />
+    <span class="data-info"><strong>Obesity: </strong>@ViewBag.obesity%</span><br />
+    <span class="data-info"><strong>Death rate: </strong>@ViewBag.death_rate deaths/1,000 population</span>
+    <div id="mapdiv" style="width: 800px; background-color:#eeeeee; height: 500px;"></div>
+       
+          <script>
+var map;
+
+        AmCharts.ready(function () {
+            map = new AmCharts.AmMap();
+
+
+            var dataProvider = {
+                mapVar: AmCharts.maps.worldLow,
+
+                linkToObject: "@ViewBag.code"
+            };
+
+
+        map.areasSettings = {
+        unlistedAreasColor: "#DDDDDD",
+                rollOverOutlineColor: "#FFFFFF",
+                rollOverColor: "#CC0000",
+                balloonText: "",
+                autoZoom: true,
+            };
+
+        map.creditsPosition = "top-right";
+
+        dataProvider.areas = [
+                {
+        title: "@ViewBag.country",
+                    id: "@ViewBag.code",
+                    color: "#3366CC",
+                    customData: "1995",
+                },
+
+            ];
+
+        map.dataProvider = dataProvider;
+
+        var legend = {
+                width: 600,
+                backgroundAlpha: 0.5,
+                backgroundColor: "#FFFFFF",
+                borderColor: "#666666",
+                borderAlpha: 1,
+                bottom: 15,
+                left: 15,
+                horizontalGap: 10,
+                data: [
+                    {
+        title: "@ViewBag.country",
+                        color: "#3366CC"
+                    },
+
+                ]
+            };
+
+    map.addLegend(legend);
+    map.write("mapdiv");
+
+});
+
+    </script>
+}
