@@ -59,9 +59,7 @@ else if (ViewBag.diseaseExists == "false")
 
 <script>
 
-
-
-    var map;
+    var map = new AmCharts.AmMap();
     var minBulletSize = 3;
     var maxBulletSize = 70;
     var min = Infinity;
@@ -69,15 +67,11 @@ else if (ViewBag.diseaseExists == "false")
 
     AmCharts.theme = AmCharts.themes.black;
 
-  
 
     var goodData = [];
 
 
-
-
-    $(document).ready(function () {
-
+    function updateData() {
         $.ajax({
             type: "POST",
             url: '/getCountriesDisease',
@@ -85,22 +79,23 @@ else if (ViewBag.diseaseExists == "false")
                 id: "@dic["diseaseID"]",
             },
             success: function (data) {
-                
 
-                console.log(JSON.parse(data));
                 statistics = JSON.parse(data);
+                console.log(statistics);
 
                 // get min and max values
                 for (var i = 0; i < mapData.length; i++) {
-
-
                     var countryName = mapData[i].name;
-                    var value = min;
+                    var value = 0;
 
-                    var found = 0;
+                    $.each(statistics, function (name, val) {
+                        var a = countryName.toLowerCase();
+                        var b = name.toLowerCase();
 
-                    $.each(statistics, function (index, val) {
-                        if (countryName == index) {
+                        console.log(a);
+                        console.log(b);
+                       
+                        if (a.indexOf(b)!=-1 || b.indexOf(a)!=-1) {
                             found = 1;
                             value = val;
                         }
@@ -113,38 +108,9 @@ else if (ViewBag.diseaseExists == "false")
                         max = value;
                     }
 
-                    if (found == 0) {
-                        value = 0;
-                    }
-
                     mapData[i].value = value;
                     goodData.push(mapData[i]);
-               //     console.log(mapData[i].value);
-                }
-                
-               
-            }
-
-   
-            
-        });
-
-        
-           
-            AmCharts.ready(function () {
-                map = new AmCharts.AmMap();
-
-                console.log("am fost apelat");
-                console.log(goodData);
-                map.addTitle("@dic["name"] in the World", 14);
-
-                map.areasSettings = {
-                    unlistedAreasColor: "#FFFFFF",
-                    unlistedAreasAlpha: 0.1
-                };
-                map.imagesSettings = {
-                    balloonText: "<span style='font-size:14px;'><b>[[title]]</b>: [[value]]</span>",
-                    alpha: 0.6
+          
                 }
 
                 var dataProvider = {
@@ -183,24 +149,39 @@ else if (ViewBag.diseaseExists == "false")
                     });
                 }
 
-
-
                 map.dataProvider = dataProvider;
-
-                map.write("mapdiv");
-
                 map.validateData();
-            });
-       
+
+            }
+        });
+    }
+
+    AmCharts.ready(function () {
+
+        updateData();
+
+        map.addTitle("@dic["name"] in the World", 14);
+
+        map.areasSettings = {
+            unlistedAreasColor: "#FFFFFF",
+            unlistedAreasAlpha: 0.1
+        };
+        map.imagesSettings = {
+            balloonText: "<span style='font-size:14px;'><b>[[title]]</b>: [[value]]</span>",
+            alpha: 0.6
+        }
+
+        var dataProvider = {
+            mapVar: AmCharts.maps.worldLow,
+            images: []
+        }
+
+        map.dataProvider = dataProvider;
+
+        map.write("mapdiv");
+
+        map.validateData();
     });
-
-
-
-
-
-
-
-
 
 </script>
 

@@ -28,7 +28,7 @@ namespace MeAd.Controllers
             diseaseCount.Add(id, 10);
 
             database db = new database(database.maindb);
-            MySqlDataReader rd = db.ExecuteReader("select country, SUM(deaths) as deaths from diseasestatistics where code like '" + id + "' GROUP BY country");
+            MySqlDataReader rd = db.ExecuteReader("select country, SUM(deaths) as deaths from diseasestatistics where code like '" + id + "%' GROUP BY country");
 
             while (rd.Read())
             {
