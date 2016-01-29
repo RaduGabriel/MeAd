@@ -24,7 +24,7 @@ namespace MeAd.Raml
             resultsObject.Add("abstract", "na");
             resultsObject.Add("id", "na");
             resultsObject.Add("speciality", "na");
-            resultsObject.Add("thumbnail", "na");
+            resultsObject.Add("thumbnail", "http://www.martyranodes.com/sites/default/files/images/kits/no_0.jpg");
             if (diseaseName.Length > 0)
             { 
                 SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("https://query.wikidata.org/sparql"), "https://query.wikidata.org");
