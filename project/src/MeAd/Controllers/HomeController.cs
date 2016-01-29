@@ -20,6 +20,13 @@ namespace MeAd.Controllers
             return View();
         }
 
+        [HttpPost]
+        public string getCountriesDisease(string diseaseName)
+        {
+
+            return " a ";
+        }
+
         public IActionResult viewDisease(string diseaseName)
         {
             ViewBag.error = "false";
@@ -35,6 +42,27 @@ namespace MeAd.Controllers
                     ViewBag.diseaseExists = "true";
                     apil["name"] = apil["name"].Replace("%20", " ");
                     ViewBag.api = apil;
+
+                    string id = apil["id"];
+
+                    Dictionary<string, double> diseaseCount = new Dictionary<string, double>();
+
+                
+
+                    database db = new database(database.maindb);
+                    MySqlDataReader rd = db.ExecuteReader("select country, SUM(deaths) from diseasestatistics where code = '"+id+"' GROUP BY country");
+                   
+                    while (rd.Read())
+                    {
+                        //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                        string countryName = rd.GetString("country");
+                        double nr = rd.GetInt64("sum");
+                        diseaseCount.Add(countryName,nr);
+                    }
+                    db.Close();
+
+
+                    ViewBag.diseaseCountriesCount = diseaseCount;
 
 
                     string url = "http://www.wikidoc.org/api.php?action=query&titles=" + diseaseName + "_(patient_information)&export&contentformat=text/plaino";
