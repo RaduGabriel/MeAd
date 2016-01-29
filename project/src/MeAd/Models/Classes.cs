@@ -102,7 +102,6 @@ namespace MeAd.Models
             this.Name = name;
             this.Code = code;
         }
-
     }
 
 
