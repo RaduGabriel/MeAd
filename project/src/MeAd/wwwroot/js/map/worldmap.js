@@ -961,7 +961,6 @@ latlong["ZW"] = {
     "latitude": -20,
     "longitude": 30
 };
-
 var mapData = [{
     "code": "AF",
     "name": "Afghanistan",
@@ -1765,7 +1764,7 @@ var mapData = [{
 }, {
     "code": "US",
     "name": "United States",
-    "value": 313085380,
+    "value": 1,
     "color": "#a7a737"
 }, {
     "code": "UY",

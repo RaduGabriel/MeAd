@@ -34,10 +34,11 @@ namespace MeAd.Raml
                                     PREFIX wdt: <http://www.wikidata.org/prop/direct/>
                                     prefix schema: <http://schema.org/>
 
-                                    SELECT ?ID ?disease ?wikiID WHERE {
+                                    SELECT ?ID ?disease ?wikiID ?diseaseID WHERE {
                                         ?ID wdt:P699 ?doid .
                                         ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
-                                                                    
+                                        ?ID wdt:P494 ?diseaseID.
+            
                                         OPTIONAL {
                                               ?wikiID schema:about ?ID. 
                                               FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
@@ -61,6 +62,13 @@ namespace MeAd.Raml
                             resultsObject["id"] = id;
                         }
                         catch (Exception e) { }
+
+                        try
+                        {
+                            string diseaseID = result["diseaseID"].ToString().Substring(0, 3);
+                            resultsObject["diseaseID"] = diseaseID;
+                        }
+                        catch { }
 
                         try
                         {

@@ -21,10 +21,27 @@ namespace MeAd.Controllers
         }
 
         [HttpPost]
-        public string getCountriesDisease(string diseaseName)
+        public string getCountriesDisease(string id)
         {
+            Dictionary<string, int> diseaseCount = new Dictionary<string, int>();
 
-            return " a ";
+            diseaseCount.Add(id,10);
+
+            database db = new database(database.maindb);
+            MySqlDataReader rd = db.ExecuteReader("select country, SUM(deaths) as deaths from diseasestatistics where code like '" + id + "' GROUP BY country");
+
+            while (rd.Read())
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                string countryName = rd.GetString("country");
+                int nr = rd.GetInt32("deaths");
+                diseaseCount.Add(countryName, nr);
+            }
+            db.Close();
+
+
+
+            return JsonConvert.SerializeObject(diseaseCount);
         }
 
         public IActionResult viewDisease(string diseaseName)
@@ -43,26 +60,9 @@ namespace MeAd.Controllers
                     apil["name"] = apil["name"].Replace("%20", " ");
                     ViewBag.api = apil;
 
-                    string id = apil["id"];
+                    
 
-                    Dictionary<string, double> diseaseCount = new Dictionary<string, double>();
-
-                
-
-                    database db = new database(database.maindb);
-                    MySqlDataReader rd = db.ExecuteReader("select country, SUM(deaths) from diseasestatistics where code = '"+id+"' GROUP BY country");
-                   
-                    while (rd.Read())
-                    {
-                        //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
-                        string countryName = rd.GetString("country");
-                        double nr = rd.GetInt64("sum");
-                        diseaseCount.Add(countryName,nr);
-                    }
-                    db.Close();
-
-
-                    ViewBag.diseaseCountriesCount = diseaseCount;
+               
 
 
                     string url = "http://www.wikidoc.org/api.php?action=query&titles=" + diseaseName + "_(patient_information)&export&contentformat=text/plaino";
