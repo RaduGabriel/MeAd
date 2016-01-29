@@ -18,11 +18,14 @@ namespace MeAd.Raml
         public IActionResult Get(string diseaseName)
         {
             Dictionary<string, string> resultsObject = new Dictionary<string, string>();
+            diseaseName = diseaseName.Replace("%20", " ");
+            diseaseName = diseaseName.Replace("_", " ");
+            resultsObject.Add("name", diseaseName);
+            resultsObject.Add("abstract", "na");
+            resultsObject.Add("id", "na");
+            resultsObject.Add("speciality", "na");
             if (diseaseName.Length > 0)
-            {
-                diseaseName = diseaseName.Replace("%20", " ");
-                diseaseName = diseaseName.Replace("_", " ");
-
+            { 
                 SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("https://query.wikidata.org/sparql"), "https://query.wikidata.org");
 
                 string query = @" PREFIX entity: <http://www.wikidata.org/entity/> 
@@ -31,17 +34,19 @@ namespace MeAd.Raml
                                     prefix schema: <http://schema.org/>
 
                                     SELECT ?ID ?disease ?wikiID WHERE {
-                                    ?ID wdt:P699 ?doid .
-                                    ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
+                                        ?ID wdt:P699 ?doid .
+                                        ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
                                                                     
-                                     OPTIONAL {
-                                              ?wikiID schema:about ?ID.
-                                              ?wikiID schema:inLanguage 'en' .
+                                        OPTIONAL {
+                                              ?wikiID schema:about ?ID. 
                                               FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
                                             }
 
-                                        filter regex(str(?disease), '^" + diseaseName + "$' )}" +
-                                "ORDER by ASC((?disease)) limit 1";
+                                    OPTIONAL {
+                                            ?wikiID schema:inLanguage 'en' . }
+                                            filter regex(str(lcase(?disease)), lcase('^" + diseaseName + "$') ) } " +
+                                " limit 1";
+
                 try
                 {
                     SparqlResultSet results = endpoint.QueryWithResultSet(query);
@@ -49,26 +54,29 @@ namespace MeAd.Raml
                     {
                         SparqlResult result = results[0];
                         string wikiLink = "";
-                        string id = result["ID"].ToString().Substring(31);
+                        try
+                        {
+                            string id = result["ID"].ToString().Substring(31);
+                            resultsObject["id"] = id;
+                        }
+                        catch (Exception e) { }
+
                         try
                         {
                             wikiLink = result["wikiID"].ToString();
                         }
-                        catch { }
-                        string name = diseaseName;
-                        if (wikiLink.Length > 0 && wikiLink.Contains("/"))
-                        {
-                            name = wikiLink.Substring(wikiLink.LastIndexOf("/") + 1, wikiLink.Length - wikiLink.LastIndexOf("/") - 1);
-                            resultsObject.Add("name", name);
-                        }
-                        resultsObject.Add("id", id);
+                        catch (Exception e) { }
 
+                      
+
+                        
 
                         // richTextBox1.Text += wikidata_id + "\n";
                         SparqlRemoteEndpoint endpoint2 = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"), "http://dbpedia.org");
-
-                        string wikidbname = name.Replace("%20", "_");
+                        int start = wikiLink.LastIndexOf("/");
+                        string wikidbname = wikiLink.Substring(start+1,wikiLink.Length-start-1);
                         wikidbname = wikidbname.Replace(" ", "_");
+                        wikidbname = wikidbname.Replace("%20", "_");
                         query = @"SELECT ?speciality ?abstract WHERE {  " +
                                 "OPTIONAL { <http://dbpedia.org/resource/" + wikidbname + "> <http://dbpedia.org/property/field> ?specID . " +
                                 "?specID rdfs:label ?speciality. }" +
@@ -77,46 +85,27 @@ namespace MeAd.Raml
                                 "filter(langMatches(lang(?abstract), 'EN'))" +
                                 "} limit 1";
 
-
-                        try
-                        {
-                            results = endpoint2.QueryWithResultSet(query);
-                        }
-                        catch { return new ObjectResult(query); }
-                        try
-                        {
-                            result = results[0];
-                        }
-                        catch
-                        {
-                            return new ObjectResult("Query inexistent" + query);
-                        }
+                        results = endpoint2.QueryWithResultSet(query);
+                        result = results[0];
                         try
                         {
                             string speciality = result["speciality"].ToString();
-                            resultsObject.Add("speciality", speciality.Substring(0, speciality.Length - 3));
+                            resultsObject["speciality"] = speciality.Substring(0, speciality.Length - 3);
                         }
-                        catch
-                        {
-                            resultsObject.Add("speciality", "na");
-                        }
-
+                        catch (Exception e) { }
                         try
                         {
                             string abstr = result["abstract"].ToString();
-                            resultsObject.Add("abstract", abstr.Substring(0, abstr.Length - 3));
+                            resultsObject["abstract"] = abstr.Substring(0, abstr.Length - 3);
                         }
-                        catch
-                        {
-                            resultsObject.Add("abstract", "na");
-                        }
+                        catch (Exception e) { }
+                   
                     }
 
+                }
+                catch (Exception e) { return new ObjectResult(resultsObject); }
+            }
 
-                }
-                catch(Exception e) { return new ObjectResult(e.ToString()); }
-                }
-            
             // TODO: implement Get - route: search/countries/{countryName}
 
             return new ObjectResult(resultsObject);
