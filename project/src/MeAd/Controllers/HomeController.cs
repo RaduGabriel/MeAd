@@ -114,7 +114,7 @@ namespace MeAd.Controllers
 
 
         [HttpPost]
-        public string getMostSearchedDiseases(int max)
+        public string getSearch(int max)
         {
             Dictionary<int, string> mostSearchDiseases = new Dictionary<int, string>();
 
@@ -129,10 +129,10 @@ namespace MeAd.Controllers
                 int deaths = rd.GetInt32("nr");
                 string code = rd.GetString("diseaseName");
 
-                string diseaseName = getDiseaseNameFromCode(code);
-                if (!mostSearchDiseases.ContainsValue(diseaseName))
+                
+                if (mostSearchDiseases.ContainsValue(code)==false && mostSearchDiseases.ContainsKey(deaths)==false)
                 {
-                    mostSearchDiseases.Add(deaths, diseaseName);
+                    mostSearchDiseases.Add(deaths, code);
                     i++;
                 }
             }
@@ -141,6 +141,34 @@ namespace MeAd.Controllers
             return JsonConvert.SerializeObject(mostSearchDiseases);
         }
 
+
+        [HttpPost]
+        public string getTopUsers(int max)
+        {
+            Dictionary<string, int> mostSearchDiseases = new Dictionary<string, int>();
+
+            database db = new database(database.maindb);
+            int upLim = max * 4;
+            MySqlDataReader rd = db.ExecuteReader("select username, score from users Order by  score DESC LIMIT " + upLim.ToString());
+
+            int i = 0;
+            while (rd.Read() && i < max)
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                int deaths = rd.GetInt32("score");
+                string code = rd.GetString("username");
+
+
+                if (mostSearchDiseases.ContainsKey(code) == false)
+                {
+                    mostSearchDiseases.Add(code, deaths);
+                    i++;
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(mostSearchDiseases);
+        }
 
         [HttpPost]
         public string getCountriesDiseaseObesity(string id, int min, int max)

@@ -56,7 +56,7 @@
     function getMostSearchedDiseased(max) {
         $.ajax({
             type: "POST",
-            url: '/getMostSearchedDiseases',
+            url: '/getSearch',
             data: {
                 max: max,
             },
@@ -70,11 +70,36 @@
                     text = "<a href='../viewDisease/" + link + "'>" + value + " no: " + index + "</a><br>" + text;
                 });
 
-                document.getElementById("most_common").innerHTML = text;
+                document.getElementById("most_searched").innerHTML = text;
             }
         });
     }
 
+    function getTopUsers(max) {
+        $.ajax({
+            type: "POST",
+            url: '/getTopUsers',
+            data: {
+                max: max,
+            },
+            success: function (data) {
+                console.log(data);
+                var text = "";
+                var jsData = JSON.parse(data);
+                console.log(jsData);
+                $.each(jsData, function (value, index) {
+                    link = value.replace(" ", "_");
+                    text =  value + " no: " + index + "<br>" + text;
+                });
+
+                document.getElementById("top_users").innerHTML = text;
+            }
+        });
+    }
+
+    getMostCommonDiseases(10);
+    getMostSearchedDiseased(10);
+    getTopUsers(10);
 
 </script>
 
@@ -85,9 +110,7 @@
         
         <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Most searched diseases<br><span id="most_searched"></span></span></h3>
     </div>
-    <script>getMostSearchDiseases(10);
-        getMostCommonDiseases(10);
-    </script>
+
     <div class="col-xs-12 col-md-4 block-2">
         
         <h3><span class="glyphicon glyphicon-plus-sign" ></span><br>Common cause of death<br><span id="most_common"></span></span></h3>
@@ -95,6 +118,6 @@
 
     <div class="col-xs-12 col-md-4 block-3">
         
-        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top users</h3>
+        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top users<br><span id="top_users"></span></span></h3>
     </div>
 </div>
