@@ -357,7 +357,6 @@ namespace MeAd.Controllers
                 while (rd.Read())
                 {
                     Context.Session.SetInt32("on", 1);
-                    Context.Session.GetInt32("on");
                     Context.Session.SetInt32("id", rd.GetInt32("id"));
                     Context.Session.SetString("email", rd.GetString("email"));
                     Context.Session.SetString("username", rd.GetString("username"));
@@ -520,6 +519,82 @@ namespace MeAd.Controllers
             else
                 ViewBag.loggedon = 0;
             return View();
+        }
+
+        [HttpPost]
+        public string FBLogin(string token)
+        {
+            try
+            {
+                WebClient wc = new WebClient();
+                wc.Proxy = null;
+
+
+                string res = wc.DownloadString("https://graph.facebook.com/me?fields=email,name,first_name,last_name,gender&access_token=" + token);
+                Dictionary<string, string> response = JsonConvert.DeserializeObject<Dictionary<string, string>>(res);
+                if (response.ContainsKey("name"))
+                {
+                    string id = response["id"];
+                    string email = response["email"];
+                    database db = new database(database.maindb);
+                    db.AddParam("?fbid", id);
+                    db.AddParam("?email", email);
+                    db.AddParam("?username", response["first_name"]+response["last_name"]);
+                  
+                    switch (response["gender"])
+                    {
+                        case "male":
+                            db.AddParam("?gender", 1);
+                            break;
+                        case "female":
+                            db.AddParam("?gender", 2);
+                            break;
+                        default:
+                            db.AddParam("?gender", 0);
+                            break;
+                    }
+
+                    MySqlDataReader rd;
+
+                    rd = db.ExecuteReader("select * from users where facebookid = ?fbid or email = ?email");
+
+                    if (rd.HasRows)
+                        while (rd.Read())
+                        {
+                            Context.Session.SetInt32("on", 1);
+                            Context.Session.SetString("email", rd.GetString("email"));
+                            Context.Session.SetString("username", rd.GetString("username"));
+                            Context.Session.SetInt32("id", rd.GetInt32("id"));
+                            Context.Session.SetString("myname", rd.GetString("lastname") + " " + rd.GetString("firstname"));
+                            break;
+                            // return "2";
+                        }
+                    else
+                    {
+                        db.ExecuteNonQuery("insert into users (email,username,gender,facebookid) values (?email,?username,?gender,?fbid)");
+                        rd = db.ExecuteReader("select * from users where facebookid = ?fbid or email = ?email");
+                        while (rd.Read())
+                        {
+                            Context.Session.SetInt32("on", 1);
+                            Context.Session.SetString("email", rd.GetString("email"));
+                            Context.Session.SetInt32("id", rd.GetInt32("id"));
+                            Context.Session.SetString("username", rd.GetString("username"));
+                            Context.Session.SetInt32("gender", rd.GetInt32("gender"));
+                        }
+                        //return "3";
+                    }
+
+                    db.Close();
+
+                    return "1";
+                }
+                else
+                    return "0";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
         }
 
 
