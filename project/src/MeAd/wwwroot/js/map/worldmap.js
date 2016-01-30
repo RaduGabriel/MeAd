@@ -1763,7 +1763,7 @@ var mapData = [{
     "color": "#d8854f"
 }, {
     "code": "US",
-    "name": "United States",
+    "name": "United States of America",
     "value": 1,
     "color": "#a7a737"
 }, {
@@ -1793,7 +1793,7 @@ var mapData = [{
     "color": "#eea638"
 }, {
     "code": "YE",
-    "name": "Yemen, Rep.",
+    "name": "Yemen",
     "value": 24799880,
     "color": "#eea638"
 }, {

@@ -39,9 +39,55 @@ namespace MeAd.Controllers
             }
             db.Close();
 
-
-
             return JsonConvert.SerializeObject(diseaseCount);
+        }
+
+        
+        [HttpPost]
+        public string getCountriesDiseaseObesity(string id, int min, int max)
+        {
+
+            string js = getCountriesDisease(id);
+
+            Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
+
+            Dictionary<string, Country> cslist = new Countries().getDictionar();
+
+            foreach (KeyValuePair<string, Country> it in cslist.ToList())
+            {
+                if ((it.Value.Density < min || it.Value.Density > max) && diseases.ContainsKey(it.Value.Name))
+                {
+                    if (diseases.ContainsKey(it.Key))
+                    {
+                        diseases.Remove(it.Key);
+                    }
+                }
+            }
+
+            return JsonConvert.SerializeObject(diseases);
+        }
+        [HttpPost]
+        public string getCountriesDiseaseDensity(string id, int min, int max)
+        {
+           
+            string js = getCountriesDisease(id);
+
+            Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
+           
+            Dictionary<string, Country> cslist = new Countries().getDictionar();
+
+            foreach(KeyValuePair<string,Country> it in cslist.ToList())
+            {
+                if ((it.Value.Density < min || it.Value.Density > max) && diseases.ContainsKey(it.Value.Name) )
+                {
+                    if (diseases.ContainsKey(it.Key))
+                    {
+                        diseases.Remove(it.Key);
+                    }
+                }
+            }
+
+            return JsonConvert.SerializeObject(diseases);
         }
 
         public IActionResult viewDisease(string diseaseName)
