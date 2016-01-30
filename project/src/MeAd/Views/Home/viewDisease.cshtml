@@ -160,7 +160,7 @@ else if (ViewBag.diseaseExists == "false")
             else {
                 one = values[0];
                 two = values[1];
-                alert(one + " " + two);
+               
             }
             updateDensity(one, two);
 
@@ -189,13 +189,14 @@ else if (ViewBag.diseaseExists == "false")
             },
             success: function (data) {
                 statistics = JSON.parse(data);
-                console.log(statistics);
+                
                 UpdateMap(data);
             }
         });
     }
 
     function updateObesity(minim, maxim) {
+        alert(minim + " " + maxim);
         $.ajax({
         type: "POST",
         url: '/getCountriesDiseaseObesity',
@@ -205,7 +206,7 @@ else if (ViewBag.diseaseExists == "false")
         max: maxim
     },
             success: function (data) { 
-                console.log(goodData);
+               
                 UpdateMap(data);
             }
     });
@@ -221,7 +222,7 @@ else if (ViewBag.diseaseExists == "false")
                 max: maxim
         },
             success: function (data) {
-                console.log(goodData);
+                console.log(data);
                 UpdateMap(data);
 
             }
@@ -238,7 +239,7 @@ else if (ViewBag.diseaseExists == "false")
             climate: climateStr,
         },
             success: function (data) {
-                console.log(goodData);
+                
                 UpdateMap(data);
             }
     });
@@ -246,7 +247,7 @@ else if (ViewBag.diseaseExists == "false")
 
     function UpdateMap(data) {
         statistics = JSON.parse(data);
-        console.log(statistics);
+        
 
         // get min and max values
         for (var i = 0; i < mapData.length; i++) {
@@ -257,9 +258,7 @@ else if (ViewBag.diseaseExists == "false")
                 var a = countryName.toLowerCase();
                 var b = name.toLowerCase();
 
-                console.log(a);
-                console.log(b);
-
+               
                 if (a.indexOf(b) != -1 || b.indexOf(a) != -1) {
                     found = 1;
                     value = val;
