@@ -36,12 +36,24 @@ namespace MeAd.Raml
             // TODO: implement Get - route: quiz/top
 			return new ObjectResult(code);
         }
-
-		/// <summary>
-		/// Get a quiz with specific ID - QuizId
-		/// </summary>
-		/// <param name="quizID"></param>
-        public IActionResult GetByQuizID(string quizID)
+        public IActionResult GetHard()
+        {
+            return new ObjectResult("");
+        }
+        public IActionResult GetEasy()
+        {
+            return new ObjectResult("");
+        }
+        public IActionResult Post([FromBody] string content, string questionID,string answer)
+        {
+           
+            return new ObjectResult("");
+        }
+        /// <summary>
+        /// Get a quiz with specific ID - QuizId
+        /// </summary>
+        /// <param name="quizID"></param>
+        public IActionResult GetTop()
         {
             // TODO: implement GetByQuizID - route: quiz/{ID}
 			return new ObjectResult("");

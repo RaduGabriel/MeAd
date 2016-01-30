@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Net;
 using System.IO;
 using VDS.RDF.Query;
+using System.Linq;
 
 namespace MeAd.Controllers
 {
@@ -287,10 +288,10 @@ namespace MeAd.Controllers
                 {
                     ViewBag.climate = rd.GetString("climate");
                     double death_rate = rd.GetDouble("death_rate");
-                    if (death_rate == -1) ViewBag.death_rate = "N.A.";
+                    if (death_rate == 0) ViewBag.death_rate = "N.A.";
                     else ViewBag.death_rate = death_rate;
                     double obesity = rd.GetDouble("obesity");
-                    if (obesity == -1) ViewBag.obesity = "N.A.";
+                    if (obesity == 0) ViewBag.obesity = "N.A.";
                     else ViewBag.obesity = obesity;
                 }
                 Dictionary<string, Country> cslist = new Countries().getDictionar();
