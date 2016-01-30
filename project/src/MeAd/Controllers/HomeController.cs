@@ -235,11 +235,15 @@ namespace MeAd.Controllers
 
             foreach (KeyValuePair<string, Country> it in cslist.ToList())
             {
-                if ((it.Value.Density < min || it.Value.Density > max) && diseases.ContainsKey(it.Value.Name))
+                if ((it.Value.Density <= min || it.Value.Density >= max))
                 {
                     if (diseases.ContainsKey(it.Key))
                     {
-                        diseases.Remove(it.Key);
+                        diseases[it.Key]=0;
+                    }
+                    else
+                    {
+                        diseases.Add(it.Key,0);
                     }
                 }
             }

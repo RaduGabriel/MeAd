@@ -224,11 +224,39 @@ span#no-result {
 
 }
 
+.block-1 h5 a,.block-2 h5 a,.block-3 h5 a {
+
+    color:white;
+    text-decoration:none;
+}
+
 .country-title,.disease-title,.cool-title {
     text-transform:uppercase;
-    color:#797474
+    color:#797474;
+    font-size: 18px;
+    
 
 }
+
+.block-1 h5 span,.block-2 h5 span,.block-3 h5 span{
+
+    text-align:center;
+     color:white;
+     font-size:17px;
+         line-height: 1.5;
+}
+
+.block-1 .glyphicon,.block-2 .glyphicon,.block-3 .glyphicon {font-size: 60px;
+    padding: 20px;}
+
+.block-1 h5 ,.block-2 h5 ,.block-3 h5 {
+
+    text-align:center;
+     color:white;
+     font-size:17px;
+         line-height: 1.5;
+}
+
 
 .country-title span,.disease-title span,.cool-title span {
     font-size: 50px;
@@ -269,6 +297,12 @@ span#no-result {
     .disease-block,.country-data-info {
         width:95%;
     }
+
+    #search-form {max-width:90%;float:none}
+    #midSearchForm > .input-group {
+    width: 100%;
+   
+}
 }
 
 #select-diseases .btn-primary {background:#0F89D1}
