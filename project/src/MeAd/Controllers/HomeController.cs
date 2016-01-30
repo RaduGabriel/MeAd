@@ -20,7 +20,23 @@ namespace MeAd.Controllers
             return View();
         }
 
-        [HttpPost]
+
+        public IActionResult ViewCountries()
+        {
+            Dictionary<string, Country> cslist = new Countries().getDictionar();
+
+            string htmlStr = "";
+
+            foreach (string i in cslist.Keys)
+            {
+                htmlStr += "<a href='../country/" + i + "'>" + i + "</a><br>";
+            }
+            ViewBag.countries = htmlStr;
+            return View();
+        }
+       
+
+    [HttpPost]
         public string getCountriesDisease(string id)
         {
             Dictionary<string, int> diseaseCount = new Dictionary<string, int>();
