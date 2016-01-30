@@ -1,7 +1,26 @@
 ﻿@{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "About Us";
 }
-<h2>@ViewData["Title"].</h2>
-<h3>@ViewData["Message"]</h3>
 
-<p>Use this area to provide additional information.</p>
+<p vocab="http://schema.org/" typeof="Person">
+    <div>
+        <div class="align-left">
+            <span><strong>Name:</strong></span>
+            <span property="name">Focsa D. Mihaela</span><br />
+            <img property="image" src="~/images/mihaela.jpg" style="width:20%" />
+            <span><strong>Phone:</strong></span>
+            <span property="telephone">0752345345</span><br />
+            <span><strong>Website:</strong></span>
+            <a property="url" href="www.mead.bevo.ro">www.mead.bevo.ro</a><br /><br/>
+        </div>
+        <div class="align-right">
+            <span><strong>Name:</strong></span>
+            <span property="name">Pastravanu C. Radu Gabriel</span><br />
+            <img property="image" src="~/images/radu.jpg" style="width:20%"/>
+            <span><strong>Phone:</strong></span>
+            <span property="telephone">0762253345</span><br />
+            <span><strong>Website:</strong></span>
+            <a property="url" href="www.mead.bevo.ro">www.mead.bevo.ro</a><br />
+        </div>
+    </div>
+</p>

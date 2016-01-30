@@ -50,15 +50,15 @@ namespace MeAd.Raml
         /// <summary>
 		/// the answer of a question from the user - checkAnswer
 		/// </summary>
-		/// <param name="content"></param>
 		/// <param name="questionID"></param>
 		/// <param name="answer"></param>
-        [HttpPost]
-        [Route("checkAnswer/{questionID}/{answer}")]
-        public virtual IActionResult PostBase([FromBody] string content,string questionID,string answer)
+		/// <param name="idUser"></param>
+        [HttpGet]
+        [Route("checkAnswer/{questionID}/{answer}/{idUser}")]
+        public virtual IActionResult GetCheckAnswerByQuestionIDAnswerIdUserBase(string questionID,string answer,string idUser)
         {
             // Do not modify this code
-            return  ((IQuizController)this).Post(content,questionID,answer);
+            return  ((IQuizController)this).GetCheckAnswerByQuestionIDAnswerIdUser(questionID,answer,idUser);
         }
     }
 }

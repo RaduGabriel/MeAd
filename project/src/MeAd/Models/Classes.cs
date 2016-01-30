@@ -156,21 +156,21 @@ namespace MeAd.Models
 
         public class CountryDiseases
         {
-            
+
             int deaths;
             string disease;
             string description;
             string url;
 
-            public CountryDiseases(int deaths,string disease,string description,string url)
+            public CountryDiseases(int deaths, string disease, string description, string url)
             {
-               
+
                 this.deaths = deaths;
                 this.disease = disease;
                 this.description = description;
                 this.url = url;
             }
-          
+
             public int Deaths
             {
                 get { return deaths; }
@@ -192,7 +192,39 @@ namespace MeAd.Models
                 set { description = value; }
             }
 
+
+
+
         }
+        public class Question
+        {
+            Dictionary<string,string> answers;
+            string description;
+            string id;
+
+            public Question(Dictionary<string, string> answers, string description, string id)
+            {
+                this.answers = answers;
+                this.description = description;
+                this.id = id;
+            }
+            public string Description
+            {
+                get { return description; }
+                set { description = value; }
+            }
+            public string Id
+            {
+                get { return id; }
+                set { id = value; }
+            }
+            public Dictionary<string, string> Answers
+            {
+                get { return answers; }
+                set { answers = value; }
+            }
+        }
+
     }
 
 }

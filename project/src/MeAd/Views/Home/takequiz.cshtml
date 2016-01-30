@@ -1,0 +1,74 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    // ViewBag.Title = "Home Page";
+    Countries.Question question = (Countries.Question)ViewBag.question;
+    int loggedon = ViewBag.loggedon;
+    int id = 0;
+    if (loggedon == 1) { id = ViewBag.id; }
+    string id_question = ViewBag.id_question;
+}
+@ViewBag.error
+
+@if (ViewBag.loggedon == 1)
+{
+    <p>@ViewBag.desc</p>
+    @foreach (KeyValuePair<string, string> answer in question.Answers)
+    {
+        <span><a href="#" id="@answer.Value" class="answer">@answer.Value</a></span><br />
+    }
+}
+else
+{
+    <h2>Login first to take a quiz</h2>
+
+}
+
+<script>
+    $(document).on('click', ".answer", function (e) {
+        var name=$(this).attr("id");
+        if(@loggedon==1)
+        {
+            $.ajax({
+                type: "GET",
+                url: '/quiz/checkAnswer/@id_question/'+name+"/@id",
+                success: function (data) {
+                    switch(data)
+                    {
+                        case "1": BootstrapDialog.show({
+                            title: "<div class='widget-header'><h4><i class='glyphicon glyphicon-ok'></i></h4></div>",
+                            message: $('<p>Correct answer!</p>'),
+                            buttons: [{
+                                cssClass: 'btn-primary',
+                                label: 'Ok',
+                                action: function (dialog) {
+                                    dialog.close();
+                                    location.reload();
+                                }
+                            }]
+                        });
+                            break;
+                        case "0": BootstrapDialog.show({
+                            title: "<div class='widget-header'><h4><i class='glyphicon glyphicon-remove'></i></h4></div>",
+                            message: $('<p>Incorrect answer!</p>'),
+                            buttons: [{
+                                cssClass: 'btn-primary',
+                                label: 'Ok',
+                                action: function (dialog) {
+                                    dialog.close();
+                                    location.reload();
+                                }
+                            }]
+                        });
+                            break;
+                    }
+                    
+                }
+
+
+            });
+
+        }
+    });
+</script>
