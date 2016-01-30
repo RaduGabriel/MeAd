@@ -9,6 +9,7 @@ using System.Net;
 using System.IO;
 using VDS.RDF.Query;
 using System.Linq;
+using System.Text;
 
 namespace MeAd.Controllers
 {
@@ -41,7 +42,7 @@ namespace MeAd.Controllers
             return JsonConvert.SerializeObject(diseaseCount);
         }
 
-        
+
         [HttpPost]
         public string getCountriesDiseaseObesity(string id, int min, int max)
         {
@@ -58,7 +59,7 @@ namespace MeAd.Controllers
                 //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
                 string countryName = rd.GetString("country");
                 int nr = rd.GetInt32("obesity");
-                if (diseases.ContainsKey(countryName) && (diseases[countryName]>=min && diseases[countryName]<=max) )
+                if (diseases.ContainsKey(countryName) && (diseases[countryName] >= min && diseases[countryName] <= max))
                 {
                     countries.Add(countryName, diseases[countryName]);
                 }
@@ -77,7 +78,7 @@ namespace MeAd.Controllers
             Dictionary<string, int> countries = new Dictionary<string, int>();
 
             database db = new database(database.maindb);
-            MySqlDataReader rd = db.ExecuteReader("select country, climate from countries where climate like '%"+climate+"%'");
+            MySqlDataReader rd = db.ExecuteReader("select country, climate from countries where climate like '%" + climate + "%'");
 
             while (rd.Read())
             {
@@ -97,16 +98,16 @@ namespace MeAd.Controllers
         [HttpPost]
         public string getCountriesDiseaseDensity(string id, int min, int max)
         {
-           
+
             string js = getCountriesDisease(id);
 
             Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
-           
+
             Dictionary<string, Country> cslist = new Countries().getDictionar();
 
-            foreach(KeyValuePair<string,Country> it in cslist.ToList())
+            foreach (KeyValuePair<string, Country> it in cslist.ToList())
             {
-                if ((it.Value.Density < min || it.Value.Density > max) && diseases.ContainsKey(it.Value.Name) )
+                if ((it.Value.Density < min || it.Value.Density > max) && diseases.ContainsKey(it.Value.Name))
                 {
                     if (diseases.ContainsKey(it.Key))
                     {
@@ -339,6 +340,42 @@ namespace MeAd.Controllers
                 ViewBag.countryDiseases = countryDiseases;
             }
             catch { }
+            return View();
+        }
+        private static Random random = new Random((int)DateTime.Now.Ticks);
+        public static string RandomString(int size)
+        {
+            StringBuilder builder = new StringBuilder();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+            return builder.ToString();
+        }
+        public IActionResult takequiz(string type)
+        {
+            if (Context.Session.GetInt32("on") == 1)
+                try
+                {
+                    ViewBag.loggedon = 1;
+                    ViewBag.id = Context.Session.GetInt32("id");
+                    if (type == "hard")
+                    {
+                        ObjectResult obj = (ObjectResult)new MeAd.Raml.QuizController().GetHard();
+                        Countries.Question question = (Countries.Question)obj.Value;
+                        ViewBag.question = question;
+                        ViewBag.desc = question.Description;
+                        ViewBag.id_question = question.Id;
+
+
+                    }
+
+                }
+                catch (Exception e) { ViewBag.error = e.ToString(); }
+            else
+                ViewBag.loggedon = 0;
             return View();
         }
 

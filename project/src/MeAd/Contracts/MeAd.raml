@@ -147,9 +147,9 @@ baseUri: http://mocksvc.mulesoft.com/mocks/01beac3d-861b-4be9-ae94-47672354c991/
                 "message":"There are no entries in top"
                 }
 
-  /checkAnswer/{questionID}/{answer}:
+  /checkAnswer/{questionID}/{answer}/{idUser}:
     displayName: checkAnswer
-    post:
+    get:
       description: the answer of a question from the user
       responses:
         200:

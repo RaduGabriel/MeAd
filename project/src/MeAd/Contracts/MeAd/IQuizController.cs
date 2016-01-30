@@ -14,6 +14,6 @@ namespace MeAd.Raml
         IActionResult Get();
         IActionResult GetHard();
         IActionResult GetTop();
-        IActionResult Post([FromBody] string content,string questionID,string answer);
+        IActionResult GetCheckAnswerByQuestionIDAnswerIdUser(string questionID,string answer,string idUser);
     }
 }
