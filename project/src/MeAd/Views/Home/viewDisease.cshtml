@@ -15,15 +15,20 @@
 <script src="~/js/map/black.js"></script>
 <script src="~/js/map/worldmap.js"></script>
 
-<form method="GET" accept-charset="utf-8">
-    <label class="search-form_label">
-        <input id="search-form" class="search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
+<form method="GET" accept-charset="utf-8" id="midSearchForm">
+    <div class="input-group input-group-lg">
+
+
+        <input id="search-form" class="form-control search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
+        <span id="no-result" class="alert alert-danger" style="display:none;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No results found</span>
         <span class="search-form_liveout"></span>
-    </label>
-    @*<select id="search-by" name="search">
-            <option value="0" selected="">Search by Disease</option>
-            <option value="1">Search by Country</option>
-        </select>*@
+        <label class="search-form_label">
+
+
+        </label>
+    </div>
+
+
 
 </form>
 <ul class="results-search" style="display:none;">
@@ -33,21 +38,53 @@
     <li><a href=""></a></li>
     <li><a href=""></a></li>
 </ul>
-<span id="no-result" style="display:none;">No results found</span>
+
 
 
 @if (ViewBag.diseaseExists == "true")
 {
+    <h3 class="disease-title"><span>@dic["name"]</span><br> Speciality: @dic["speciality"]</h3>
+    
+    <h4 class="disease-id">Id:<span style="font-weight:normal; font-size: 17px;"> @dic["id"]</span></h4><br />
 
-    <h2>@dic["name"]</h2>
-    <h4>Speciality:<span style="font-weight:normal; font-size: 17px;"> @dic["speciality"]</span></h4><br />
-    <h4>Id:<span style="font-weight:normal; font-size: 17px;"> @dic["id"]</span></h4><br />
-    <h4>Abstract: <span style="font-weight:normal; font-size: 17px;">@dic["abstract"]</span></h4><br />
-    <h4>Image: <span style="font-weight:normal; font-size: 17px;"><img src="@dic["thumbnail"]"></span></h4><br />
+    <span class="data-info common-diseases"><strong>Abstract</strong></span><br />
+    <div class="disease-block">
+        <h4><span style="font-weight:normal; font-size: 17px;">@dic["abstract"]</span></h4><br />
+    </div>
 
-    <h4>Symptoms: <span style="font-weight:normal; font-size: 17px;">@Html.Raw(symptoms)</span></h4>
+    <span class="data-info common-diseases"><strong>Image</strong></span><br />
+    <div class="disease-block">
+        <span style="font-weight:normal; font-size: 17px;"><img src="@dic["thumbnail"]"></span>
+    </div><br />
+
+    <span class="data-info common-diseases"><strong>Symptoms</strong></span><br />
+    <div class="disease-block"><h4><span style="font-weight:normal; font-size: 17px;">@Html.Raw(symptoms)</span></h4></div>
+    <div id="select-diseases">
+
+        <div class="form-group">
+            <label for="sel1">Select list:</label>
+            <select class="form-control" id="sel1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="sel2">Select list:</label>
+            <select class="form-control" id="sel2">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+            </select>
+        </div>
+
+    </div>
 
     <div id="mapdiv" style="width: 100%; height: 600px;background-color: #222222;"></div>
+
 
 }
 else if (ViewBag.error == "true")
