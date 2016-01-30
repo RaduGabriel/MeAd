@@ -24,17 +24,17 @@ namespace MeAd.Raml
             diseaseName = diseaseName.Replace("%20", " ");
             diseaseName = diseaseName.Replace("_", " ");
 
-           
-            
-            
+
+
+
             resultsObject.Add("name", diseaseName);
             resultsObject.Add("abstract", "na");
             resultsObject.Add("id", "na");
             resultsObject.Add("speciality", "na");
-            resultsObject.Add("diseaseID", "na"); 
+            resultsObject.Add("diseaseID", "na");
             resultsObject.Add("thumbnail", "http://www.martyranodes.com/sites/default/files/images/kits/no_0.jpg");
             if (diseaseName.Length > 0)
-            { 
+            {
                 SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("https://query.wikidata.org/sparql"), "https://query.wikidata.org");
 
                 string query = @" 
@@ -84,7 +84,7 @@ UNION { " +
                 try
                 {
                     SparqlResultSet results = endpoint.QueryWithResultSet(query);
-                    if (results.Count != 0)
+                   
                     {
                         SparqlResult result = results[0];
                         string wikiLink = "";
@@ -108,14 +108,14 @@ UNION { " +
                         }
                         catch (Exception e) { }
 
-                      
 
-                        
+
+
 
                         // richTextBox1.Text += wikidata_id + "\n";
                         SparqlRemoteEndpoint endpoint2 = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"), "http://dbpedia.org");
                         int start = wikiLink.LastIndexOf("/");
-                        string wikidbname = wikiLink.Substring(start+1,wikiLink.Length-start-1);
+                        string wikidbname = wikiLink.Substring(start + 1, wikiLink.Length - start - 1);
                         wikidbname = wikidbname.Replace(" ", "_");
                         wikidbname = wikidbname.Replace("%20", "_");
                         query = @"SELECT ?speciality ?abstract ?thumbnail WHERE {  " +
@@ -140,7 +140,7 @@ UNION { " +
                             string abstr = result["abstract"].ToString();
                             resultsObject["abstract"] = abstr.Substring(0, abstr.Length - 3);
                         }
-                        catch  { }
+                        catch { }
 
                         try
                         {
@@ -148,11 +148,50 @@ UNION { " +
                             resultsObject["thumbnail"] = thumbnail;
                         }
                         catch { }
-                   
+
                     }
 
                 }
-                catch (Exception e) { return new ObjectResult(resultsObject); }
+                catch
+                {
+
+                    SparqlRemoteEndpoint endpoint2 = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"), "http://dbpedia.org");
+
+                    string wikidbname = diseaseName.Replace(" ", "_");
+                    wikidbname = wikidbname.Replace("%20", "_");
+                    query = @"SELECT ?speciality ?abstract ?thumbnail WHERE {  " +
+                            "OPTIONAL { <http://dbpedia.org/resource/" + wikidbname + "> <http://dbpedia.org/property/field> ?specID . " +
+                            "?specID rdfs:label ?speciality. }" +
+                            "OPTIONAL { <http://dbpedia.org/resource/" + wikidbname + "> <http://dbpedia.org/ontology/abstract> ?abstract. }" +
+                            " OPTIONAL { <http://dbpedia.org/resource/" + wikidbname + "> <http://dbpedia.org/ontology/thumbnail> ?thumbnail.  }" +
+                            "filter(langMatches(lang(?speciality), 'EN'))  " +
+                            "filter(langMatches(lang(?abstract), 'EN'))" +
+                            "} limit 1";
+
+                    SparqlResultSet results = endpoint2.QueryWithResultSet(query);
+                    SparqlResult result = results[0];
+                    try
+                    {
+                        string speciality = result["speciality"].ToString();
+                        resultsObject["speciality"] = speciality.Substring(0, speciality.Length - 3);
+                    }
+                    catch { }
+                    try
+                    {
+                        string abstr = result["abstract"].ToString();
+                        resultsObject["abstract"] = abstr.Substring(0, abstr.Length - 3);
+                    }
+                    catch { }
+
+                    try
+                    {
+                        string thumbnail = result["thumbnail"].ToString();
+                        resultsObject["thumbnail"] = thumbnail;
+                    }
+                    catch { }
+
+
+                }
             }
 
             // TODO: implement Get - route: search/countries/{countryName}

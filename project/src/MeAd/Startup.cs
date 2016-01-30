@@ -152,6 +152,7 @@ namespace MeAd
                 routes.MapRoute("getCountriesDiseaseDensity", "getCountriesDiseaseDensity", new { controller = "Home", action = "getCountriesDiseaseDensity" });
                 routes.MapRoute("getCountriesDiseaseObesity", "getCountriesDiseaseObesity", new { controller = "Home", action = "getCountriesDiseaseObesity" });
                 routes.MapRoute("getCountriesDiseaseClimate", "getCountriesDiseaseClimate", new { controller = "Home", action = "getCountriesDiseaseClimate" });
+                routes.MapRoute("getMostSearchDiseases", "getMostSearchDiseases", new { controller = "Home", action = "getMostSearchDiseases" });
 
 
             });
