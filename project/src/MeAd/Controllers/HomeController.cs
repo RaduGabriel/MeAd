@@ -70,6 +70,32 @@ namespace MeAd.Controllers
         }
 
         [HttpPost]
+        public string getCountriesDiseaseClimate(string id, string climate)
+        {
+            string js = getCountriesDisease(id);
+
+            Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
+            Dictionary<string, int> countries = new Dictionary<string, int>();
+
+            database db = new database(database.maindb);
+            MySqlDataReader rd = db.ExecuteReader("select country, climate from countries where climate like '%"+climate+"%'");
+
+            while (rd.Read())
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                string countryName = rd.GetString("country");
+                string climateDB = rd.GetString("climate");
+                if (diseases.ContainsKey(countryName))
+                {
+                    countries.Add(countryName, diseases[countryName]);
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(countries);
+        }
+
+        [HttpPost]
         public string getCountriesDiseaseDensity(string id, int min, int max)
         {
            
