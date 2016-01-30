@@ -41,7 +41,107 @@ namespace MeAd.Controllers
             return JsonConvert.SerializeObject(diseaseCount);
         }
 
-        
+
+        private string getDiseaseNameFromCode(string diseaseCode)
+        {
+            string diseaseName = "";
+
+            SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("http://dbpedia.org/sparql"), "http://dbpedia.org");
+            
+            {
+               string  query = @"SELECT * WHERE {
+                            ?url <http://dbpedia.org/ontology/icd10> ?ID.
+                            ?url rdfs:label ?name.
+                            ?url <http://dbpedia.org/ontology/abstract> ?description.
+                            filter regex(str(lcase(?ID)), concat(lcase('" + diseaseCode[0] + "'), '[" + diseaseCode[1] + "][" + diseaseCode[2] + "][.]?[0-9]?') )" +
+                        "filter(langMatches(lang(?name), 'EN'))" +
+                        "filter(langMatches(lang(?description), 'EN'))" +
+                        "} limit 1";
+                SparqlResultSet results = endpoint.QueryWithResultSet(query);
+                if (results.Count > 0)
+                {
+                    
+                    diseaseName = results[0]["name"].ToString().Remove(results[0]["name"].ToString().Length - 3);
+                }
+                else
+                {
+                    query = @"SELECT * WHERE {
+                            ?url <http://dbpedia.org/ontology/icd10> ?ID.
+                            ?url rdfs:label ?name.
+                            ?url <http://dbpedia.org/ontology/abstract> ?description.
+                            filter regex(str(lcase(?ID)), concat(lcase('" + diseaseCode[0] + "'), '[" + diseaseCode[1] + "][0-9][.]?[0-9]?') )" +
+                       "filter(langMatches(lang(?name), 'EN'))" +
+                       "filter(langMatches(lang(?description), 'EN'))" +
+                       "} limit 1";
+                    results = endpoint.QueryWithResultSet(query);
+                    if (results.Count > 0)
+                    {
+                        diseaseCode = results[0]["name"].ToString().Remove(results[0]["name"].ToString().Length - 3);
+                    }
+                }
+
+            }
+                return diseaseName;
+           }
+
+        [HttpPost]
+        public string getMostCommonDiseases(int max)
+        {
+            Dictionary<int, string> mostSearchDiseases = new Dictionary<int, string>();
+
+            database db = new database(database.maindb);
+            int upLim = max * 4;
+            MySqlDataReader rd = db.ExecuteReader("select code, SUM(deaths) as deathsno from diseasestatistics GROUP BY code Order by deathsno DESC LIMIT "+upLim.ToString());
+
+            int i = 0;
+            while (rd.Read()&& i<max)
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                int deaths = rd.GetInt32("deathsno");
+                string code = rd.GetString("code");
+
+                string diseaseName = getDiseaseNameFromCode(code);
+                if (!mostSearchDiseases.ContainsValue(diseaseName))
+                {
+                    mostSearchDiseases.Add(deaths, diseaseName);
+                    i++;
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(mostSearchDiseases);
+        }
+
+
+        [HttpPost]
+        public string getMostSearchedDiseases(int max)
+        {
+            Dictionary<int, string> mostSearchDiseases = new Dictionary<int, string>();
+
+            database db = new database(database.maindb);
+            int upLim = max * 4;
+            MySqlDataReader rd = db.ExecuteReader("select diseaseName, COUNT(diseaseName) as nr from viewHistory GROUP BY diseaseName Order by  nr DESC LIMIT " + upLim.ToString());
+
+            int i = 0;
+            while (rd.Read() && i < max)
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                int deaths = rd.GetInt32("nr");
+                string code = rd.GetString("diseaseName");
+
+                string diseaseName = getDiseaseNameFromCode(code);
+                if (!mostSearchDiseases.ContainsValue(diseaseName))
+                {
+                    mostSearchDiseases.Add(deaths, diseaseName);
+                    i++;
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(mostSearchDiseases);
+        }
+
+
         [HttpPost]
         public string getCountriesDiseaseObesity(string id, int min, int max)
         {
@@ -59,6 +159,32 @@ namespace MeAd.Controllers
                 string countryName = rd.GetString("country");
                 int nr = rd.GetInt32("obesity");
                 if (diseases.ContainsKey(countryName) && (diseases[countryName]>=min && diseases[countryName]<=max) )
+                {
+                    countries.Add(countryName, diseases[countryName]);
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(countries);
+        }
+
+        [HttpPost]
+        public string getCountriesDiseaseClimate(string id, string climate)
+        {
+            string js = getCountriesDisease(id);
+
+            Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
+            Dictionary<string, int> countries = new Dictionary<string, int>();
+
+            database db = new database(database.maindb);
+            MySqlDataReader rd = db.ExecuteReader("select country, climate from countries where climate like '%"+climate+"%'");
+
+            while (rd.Read())
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                string countryName = rd.GetString("country");
+                string climateDB = rd.GetString("climate");
+                if (diseases.ContainsKey(countryName))
                 {
                     countries.Add(countryName, diseases[countryName]);
                 }
@@ -96,6 +222,20 @@ namespace MeAd.Controllers
         {
             ViewBag.error = "false";
             ViewBag.diseaseExists = "false";
+
+            try
+            {
+                if ((Context.Session.GetInt32("on") != null && Context.Session.GetInt32("on") == 1))
+                {
+                    int userid = (int)Context.Session.GetInt32("id");
+                    string key = diseaseName + userid.ToString();
+
+                    Models.database db = new database(database.maindb);
+                    MySqlDataReader rd = db.ExecuteReader("replace into viewHistory (id,diseaseName,ky) values(" + userid.ToString() + ", '" + diseaseName + "', '" + key + "');");
+                    db.Close();
+                }
+            }
+            catch { }
             try
             {
                 ObjectResult obj = (ObjectResult)new MeAd.Raml.DiseaseDiseaseNameController().Get(diseaseName);
@@ -188,6 +328,7 @@ namespace MeAd.Controllers
                 while (rd.Read())
                 {
                     Context.Session.SetInt32("on", 1);
+                    Context.Session.GetInt32("on");
                     Context.Session.SetInt32("id", rd.GetInt32("id"));
                     Context.Session.SetString("email", rd.GetString("email"));
                     Context.Session.SetString("username", rd.GetString("username"));

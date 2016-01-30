@@ -104,9 +104,7 @@ else if (ViewBag.diseaseExists == "false")
 
     AmCharts.theme = AmCharts.themes.black;
 
-
     var goodData = [];
-
 
     function updateData() {
         $.ajax({
@@ -116,12 +114,9 @@ else if (ViewBag.diseaseExists == "false")
                 id: "@dic["diseaseID"]",
             },
             success: function (data) {
-
                 statistics = JSON.parse(data);
                 console.log(statistics);
-
                 UpdateMap(data);
-
             }
         });
     }
@@ -152,11 +147,25 @@ else if (ViewBag.diseaseExists == "false")
                 max: maxim
         },
             success: function (data) {
-
-                
                 console.log(goodData);
                 UpdateMap(data);
 
+            }
+    });
+    }
+
+    
+    function updateClimate(climateStr) {
+        $.ajax({
+            type: "POST",
+            url: '/getCountriesDiseaseClimate',
+            data: {
+                id: "@dic["diseaseID"]",
+            climate: climateStr,
+        },
+            success: function (data) {
+                console.log(goodData);
+                UpdateMap(data);
             }
     });
     }
@@ -238,7 +247,7 @@ else if (ViewBag.diseaseExists == "false")
 
     AmCharts.ready(function () {
 
-        updateObesity(0,20);
+        updateClimate("continental");
 
         map.addTitle("@dic["name"] in the World", 14);
 

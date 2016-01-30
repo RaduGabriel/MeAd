@@ -55,7 +55,7 @@
                 </ul>
                 
                 <ul class="nav navbar-nav navbar-right" style="@hide2">
-                    <li><a href="Register">Register</a></li>
+                    <li><a href="../Register">Register</a></li>
                     <li><a href="#" id="login"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
                 </ul>
                 <div class="nav navbar-nav navbar-right" id="logout" style="@hide;">
@@ -212,7 +212,7 @@
                 action: function (dialog) {
                     $.ajax({
                         type: "POST",
-                        url: '/Logout',
+                        url: '../Logout',
                         data: {
 
                         },
@@ -264,7 +264,7 @@
                     else
                         $.ajax({
                             type: "POST",
-                            url: '/Login',
+                            url: '../Login',
                             data: {
                                 username: $("#usernameLogin").val(),
                                 password: $("#passLogin").val()
