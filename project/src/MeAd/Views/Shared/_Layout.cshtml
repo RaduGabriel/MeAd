@@ -45,7 +45,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-controller="Home" asp-action="Index" class="navbar-brand">MeAd</a>
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand"><img src="~/images/logo.png" /></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -56,7 +56,7 @@
                 
                 <ul class="nav navbar-nav navbar-right" style="@hide2">
                     <li><a href="Register">Register</a></li>
-                    <li><a href="#" id="login">Log in</a></li>
+                    <li><a href="#" id="login"><span class="glyphicon glyphicon-user"></span> Log in</a></li>
                 </ul>
                 <div class="nav navbar-nav navbar-right" id="logout" style="@hide;">
                     Welcome <strong>@username</strong>! <a id="logout-btn" href="#">Logout</a>
