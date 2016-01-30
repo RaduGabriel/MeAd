@@ -15,10 +15,10 @@ namespace MeAd.Raml
 
 
         /// <summary>
-		/// Get top users from quiz - Top
+		/// get a question from quiz
 		/// </summary>
         [HttpGet]
-        [Route("top")]
+        [Route("easy")]
         public virtual IActionResult GetBase()
         {
             // Do not modify this code
@@ -26,15 +26,39 @@ namespace MeAd.Raml
         }
 
         /// <summary>
-		/// Get a quiz with specific ID - QuizId
+		/// get a question from quiz
 		/// </summary>
-		/// <param name="quizID"></param>
         [HttpGet]
-        [Route("{ID}")]
-        public virtual IActionResult GetByQuizIDBase(string quizID)
+        [Route("hard")]
+        public virtual IActionResult GetHardBase()
         {
             // Do not modify this code
-            return  ((IQuizController)this).GetByQuizID(quizID);
+            return  ((IQuizController)this).GetHard();
+        }
+
+        /// <summary>
+		/// Get top users from quiz - Top
+		/// </summary>
+        [HttpGet]
+        [Route("top")]
+        public virtual IActionResult GetTopBase()
+        {
+            // Do not modify this code
+            return  ((IQuizController)this).GetTop();
+        }
+
+        /// <summary>
+		/// the answer of a question from the user - checkAnswer
+		/// </summary>
+		/// <param name="content"></param>
+		/// <param name="questionID"></param>
+		/// <param name="answer"></param>
+        [HttpPost]
+        [Route("checkAnswer/{questionID}/{answer}")]
+        public virtual IActionResult PostBase([FromBody] string content,string questionID,string answer)
+        {
+            // Do not modify this code
+            return  ((IQuizController)this).Post(content,questionID,answer);
         }
     }
 }

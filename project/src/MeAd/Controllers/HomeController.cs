@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using MeAd.Models;
 using Microsoft.AspNet.Http;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net;
 using System.IO;
+using VDS.RDF.Query;
+using System.Linq;
 
 namespace MeAd.Controllers
 {
@@ -315,10 +314,10 @@ namespace MeAd.Controllers
                 {
                     ViewBag.climate = rd.GetString("climate");
                     double death_rate = rd.GetDouble("death_rate");
-                    if (death_rate == -1) ViewBag.death_rate = "N.A.";
+                    if (death_rate == 0) ViewBag.death_rate = "N.A.";
                     else ViewBag.death_rate = death_rate;
                     double obesity = rd.GetDouble("obesity");
-                    if (obesity == -1) ViewBag.obesity = "N.A.";
+                    if (obesity == 0) ViewBag.obesity = "N.A.";
                     else ViewBag.obesity = obesity;
                 }
                 Dictionary<string, Country> cslist = new Countries().getDictionar();
@@ -329,20 +328,15 @@ namespace MeAd.Controllers
                 }
                 catch { }
 
-                //List<string> 
-                ViewBag.ICDcode = "N.A.";
-                rd = db.ExecuteReader("SELECT * FROM `diseasestatistics` where country like '%" + countryName + "%' order by deaths desc limit 20");
-                while (rd.Read())
-                {
-                    string code = rd.GetString("code");
-                    ViewBag.ICDcode = code;
-                }
 
-
-
-
-
-                db.Close();
+            }
+            catch { }
+            ViewBag.nr = 0;
+            try
+            {
+                ObjectResult obj = (ObjectResult)new MeAd.Raml.SearchController().Get(countryName);
+                Dictionary<string, Countries.CountryDiseases> countryDiseases = (Dictionary<string, Countries.CountryDiseases>)obj.Value;
+                ViewBag.countryDiseases = countryDiseases;
             }
             catch { }
             return View();

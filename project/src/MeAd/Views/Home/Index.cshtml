@@ -1,13 +1,23 @@
 ﻿
-<form method="GET" accept-charset="utf-8">
-    <label class="search-form_label">
-        <input id="search-form" class="search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
+<div id="intro-text">
+    <h1 class="title"> THE BEST <br><span>MEDICAL WEBSITE!</span></h1>
+<h3 class="sub-title">WE CARE FOR YOUR HEALTH</h3>
+    </div>
+
+<form method="GET" accept-charset="utf-8" id="midSearchForm">
+    <div class="input-group input-group-lg">
+
+        <!--<input type="text" class="form-control" aria-describedby="sizing-addon1" placeholder="Search..." />-->
+        <input id="search-form" class="form-control search-form_input" type="text" name="s" autocomplete="off" placeholder="Search..." />
+        <span id="no-result" class="alert alert-danger" style="display:none;"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> No results found</span>
         <span class="search-form_liveout"></span>
-    </label>
-    @*<select id="search-by" name="search">
-        <option value="0" selected="">Search by Disease</option>
-        <option value="1">Search by Country</option>
-    </select>*@
+        <label class="search-form_label">
+            
+           
+        </label>
+    </div>
+    
+    
   
 </form>
 
@@ -18,4 +28,23 @@
     <li><a href=""></a></li>
     <li><a href=""></a></li>
 </ul>
-<span id="no-result" style="display:none;">No results found</span>
+
+
+<div class="clearfix"></div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-4 block-1">
+        
+        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top Country</h3>
+    </div>
+
+    <div class="col-xs-12 col-md-4 block-2">
+        
+        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Most Searched Diseases</h3>
+    </div>
+
+    <div class="col-xs-12 col-md-4 block-3">
+        
+        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top blabla</h3>
+    </div>
+</div>

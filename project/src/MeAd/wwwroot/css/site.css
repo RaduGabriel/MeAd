@@ -1,6 +1,8 @@
 ﻿body {
-    padding-top: 50px;
+    padding-top: 200px;
     padding-bottom: 20px;
+    background:url(../images/bg-image.jpg) top center;
+    background-size:cover;
 }
 
 /* Wrapping element */
@@ -128,3 +130,98 @@ textarea {
   #mapdiv{
       margin-top:20px;
   }
+  }
+
+  .navbar-inverse{
+      background: #0F89D1;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.38);
+      border-color:transparent
+  }
+
+  .navbar-inverse .navbar-brand,.navbar-inverse .navbar-nav > li > a {
+    color: #fff;
+}
+
+  .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    
+    background-color: rgb(16, 120, 181);
+}
+
+@media (min-width: 768px) {
+    .navbar-nav {
+        margin-top: 40px;
+    }
+}
+
+#search-form {
+    max-width:65%;
+    border-radius:6px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.27);
+    height: 50px;
+        float: left;
+        margin-right:10px;
+}
+
+#midSearchForm {margin: 80px 0;}
+
+#midSearchForm > .input-group {    
+    width: 60%;
+    margin: 30px 20px;
+}
+
+#intro-text {padding-left: 30px;
+    border-left: 5px solid #9E9E9E;
+    margin-left: 20px;}
+
+#intro-text .title {
+    font-weight: bold;
+    color: #0F89D1;
+    
+}
+
+#intro-text .title span {padding-top: 5px;
+    font-size: 60px;
+    display: inline-block;}
+
+#intro-text .sub-title { 
+    
+    color: #777777;
+
+}
+
+span#no-result {
+    
+    color: #FFFFFF;
+    background-color: #FF2A2A;
+    border-color: #EF0023;
+    border-radius: 6px;
+    padding:14px;
+
+    -webkit-transition: all 500ms ease-out 1s;
+    -moz-transition: all 500ms ease-out 1s;
+    -o-transition: all 500ms ease-out 1s;
+    transition: all 500ms ease-out 1s;
+}
+
+.ui-menu .ui-menu-item:hover {
+
+    background:#0F89D1;
+    color:white
+}
+
+.ui-menu .ui-menu-item:hover a {color:white}
+
+.ui-autocomplete {max-height:200px}
+
+.block-1 {background:#0F89D1}
+.block-2 {background: rgb(40, 157, 226);}
+.block-3 {background:#0F89D1}
+
+.block-1 h3,.block-2 h3,.block-3 h3 {
+    color:#fff;
+    text-transform:uppercase;
+    text-align:center
+
+}
+  
+ 
