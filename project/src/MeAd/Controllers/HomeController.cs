@@ -85,7 +85,7 @@ namespace MeAd.Controllers
            }
 
         [HttpPost]
-        public string getMostSearchDiseases(int max)
+        public string getMostCommonDiseases(int max)
         {
             Dictionary<int, string> mostSearchDiseases = new Dictionary<int, string>();
 
@@ -99,6 +99,35 @@ namespace MeAd.Controllers
                 //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
                 int deaths = rd.GetInt32("deathsno");
                 string code = rd.GetString("code");
+
+                string diseaseName = getDiseaseNameFromCode(code);
+                if (!mostSearchDiseases.ContainsValue(diseaseName))
+                {
+                    mostSearchDiseases.Add(deaths, diseaseName);
+                    i++;
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(mostSearchDiseases);
+        }
+
+
+        [HttpPost]
+        public string getMostSearchedDiseases(int max)
+        {
+            Dictionary<int, string> mostSearchDiseases = new Dictionary<int, string>();
+
+            database db = new database(database.maindb);
+            int upLim = max * 4;
+            MySqlDataReader rd = db.ExecuteReader("select diseaseName, COUNT(diseaseName) as nr from viewHistory GROUP BY diseaseName Order by  nr DESC LIMIT " + upLim.ToString());
+
+            int i = 0;
+            while (rd.Read() && i < max)
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                int deaths = rd.GetInt32("nr");
+                string code = rd.GetString("diseaseName");
 
                 string diseaseName = getDiseaseNameFromCode(code);
                 if (!mostSearchDiseases.ContainsValue(diseaseName))

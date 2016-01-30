@@ -30,10 +30,10 @@
 </ul>
 
 <script>
-    function getMostSearchDiseases(max) {
+    function getMostCommonDiseases(max) {
         $.ajax({
             type: "POST",
-            url: '/getMostSearchDiseases',
+            url: '/getMostCommonDiseases',
             data: {
                 max: max,
         },
@@ -47,9 +47,32 @@
                     text =  "<a href='../viewDisease/"+link+"'>"+ value + " no: " + index + "</a><br>"+text;
                 });
 
-                document.getElementById("most_searched").innerHTML = text;
+                document.getElementById("most_common").innerHTML = text;
             }
     });
+    }
+
+
+    function getMostSearchedDiseased(max) {
+        $.ajax({
+            type: "POST",
+            url: '/getMostSearchedDiseases',
+            data: {
+                max: max,
+            },
+            success: function (data) {
+                console.log(data);
+                var text = "";
+                var jsData = JSON.parse(data);
+                console.log(jsData);
+                $.each(jsData, function (index, value) {
+                    link = value.replace(" ", "_");
+                    text = "<a href='../viewDisease/" + link + "'>" + value + " no: " + index + "</a><br>" + text;
+                });
+
+                document.getElementById("most_common").innerHTML = text;
+            }
+        });
     }
 
 
@@ -60,16 +83,18 @@
 <div class="row">
     <div class="col-xs-12 col-md-4 block-1">
         
-        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top Country</h3>
+        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Most searched diseases<br><span id="most_searched"></span></span></h3>
     </div>
-    <script>getMostSearchDiseases(10);</script>
+    <script>getMostSearchDiseases(10);
+        getMostCommonDiseases(10);
+    </script>
     <div class="col-xs-12 col-md-4 block-2">
         
-        <h3><span class="glyphicon glyphicon-plus-sign" id="most_searched"></span><br>Most Searched Diseases</h3>
+        <h3><span class="glyphicon glyphicon-plus-sign" ></span><br>Common cause of death<br><span id="most_common"></span></span></h3>
     </div>
 
     <div class="col-xs-12 col-md-4 block-3">
         
-        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top blabla</h3>
+        <h3><span class="glyphicon glyphicon-plus-sign"></span><br>Top users</h3>
     </div>
 </div>
