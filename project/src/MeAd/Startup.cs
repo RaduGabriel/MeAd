@@ -159,6 +159,8 @@ namespace MeAd
                 routes.MapRoute("getTopUsers", "getTopUsers", new { controller = "Home", action = "getTopUsers" });
                 routes.MapRoute("ViewCountries", "ViewCountries", new { controller = "Home", action = "ViewCountries" });
 
+                routes.MapRoute("FBLogin", "FBLogin", new { controller = "Home", action = "FBLogin" });
+
             });
 
 
