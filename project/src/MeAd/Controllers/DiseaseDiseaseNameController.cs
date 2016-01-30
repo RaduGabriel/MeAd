@@ -24,30 +24,55 @@ namespace MeAd.Raml
             resultsObject.Add("abstract", "na");
             resultsObject.Add("id", "na");
             resultsObject.Add("speciality", "na");
+            resultsObject.Add("diseaseID", "na"); 
             resultsObject.Add("thumbnail", "http://www.martyranodes.com/sites/default/files/images/kits/no_0.jpg");
             if (diseaseName.Length > 0)
             { 
                 SparqlRemoteEndpoint endpoint = new SparqlRemoteEndpoint(new Uri("https://query.wikidata.org/sparql"), "https://query.wikidata.org");
 
-                string query = @" PREFIX entity: <http://www.wikidata.org/entity/> 
-                                    PREFIX p: <http://www.wikidata.org/prop/direct/>
-                                    PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-                                    prefix schema: <http://schema.org/>
+                string query = @" 
+PREFIX entity: <http://www.wikidata.org/entity/> 
+PREFIX p: <http://www.wikidata.org/prop/direct/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+prefix schema: <http://schema.org/>
 
-                                    SELECT ?ID ?disease ?wikiID ?diseaseID WHERE {
-                                        ?ID wdt:P699 ?doid .
-                                        ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
-                                        ?ID wdt:P494 ?diseaseID.
+Select * WHERE {
+{    
+    SELECT ?ID ?disease ?wikiID ?diseaseID WHERE {
+    ?ID wdt:P699 ?doid .
+    ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
+    ?ID wdt:P494 ?diseaseID.
             
-                                        OPTIONAL {
-                                              ?wikiID schema:about ?ID. 
-                                              FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
-                                            }
+    OPTIONAL {
+            ?wikiID schema:about ?ID. 
+            FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
+    }
 
-                                    OPTIONAL {
-                                            ?wikiID schema:inLanguage 'en' . }
-                                            filter regex(str(lcase(?disease)), lcase('^" + diseaseName + "$') ) } " +
-                                " limit 1";
+    OPTIONAL {
+            ?wikiID schema:inLanguage 'en' . }
+            filter regex(str(lcase(?disease)), lcase('^" + diseaseName + @"$') ) } 
+    } 
+
+UNION { " +
+
+    @"SELECT ?ID ?disease ?wikiID ?diseaseID WHERE {
+    ?ID wdt:P1995 ?doid .
+    ?ID rdfs:label ?disease filter (lang(?disease) = 'en').
+    ?ID wdt:P494 ?diseaseID.
+            
+    OPTIONAL {
+        ?wikiID schema:about ?ID. 
+        FILTER (SUBSTR(str(?wikiID), 1, 25) = 'https://en.wikipedia.org/')
+    }
+
+    OPTIONAL {
+        ?wikiID schema:inLanguage 'en' . 
+    }
+    
+    filter regex(str(lcase(?disease)), lcase('^" + diseaseName + "$') ) } " +
+@"  }
+
+} limit 1";
 
                 try
                 {

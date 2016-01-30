@@ -37,9 +37,58 @@ namespace MeAd.Controllers
             }
             db.Close();
 
-
-
             return JsonConvert.SerializeObject(diseaseCount);
+        }
+
+        
+        [HttpPost]
+        public string getCountriesDiseaseObesity(string id, int min, int max)
+        {
+            string js = getCountriesDisease(id);
+
+            Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
+            Dictionary<string, int> countries = new Dictionary<string, int>();
+
+            database db = new database(database.maindb);
+            MySqlDataReader rd = db.ExecuteReader("select country, obesity from countries");
+
+            while (rd.Read())
+            {
+                //iei valorile rd.GetString("numele coloanei") sau rd.GetInt32("nume coloana");
+                string countryName = rd.GetString("country");
+                int nr = rd.GetInt32("obesity");
+                if (diseases.ContainsKey(countryName) && (diseases[countryName]>=min && diseases[countryName]<=max) )
+                {
+                    countries.Add(countryName, diseases[countryName]);
+                }
+            }
+            db.Close();
+
+            return JsonConvert.SerializeObject(countries);
+        }
+
+        [HttpPost]
+        public string getCountriesDiseaseDensity(string id, int min, int max)
+        {
+           
+            string js = getCountriesDisease(id);
+
+            Dictionary<string, int> diseases = JsonConvert.DeserializeObject<Dictionary<string, int>>(js);
+           
+            Dictionary<string, Country> cslist = new Countries().getDictionar();
+
+            foreach(KeyValuePair<string,Country> it in cslist.ToList())
+            {
+                if ((it.Value.Density < min || it.Value.Density > max) && diseases.ContainsKey(it.Value.Name) )
+                {
+                    if (diseases.ContainsKey(it.Key))
+                    {
+                        diseases.Remove(it.Key);
+                    }
+                }
+            }
+
+            return JsonConvert.SerializeObject(diseases);
         }
 
         public IActionResult viewDisease(string diseaseName)
@@ -57,11 +106,6 @@ namespace MeAd.Controllers
                     ViewBag.diseaseExists = "true";
                     apil["name"] = apil["name"].Replace("%20", " ");
                     ViewBag.api = apil;
-
-
-
-
-
 
                     string url = "http://www.wikidoc.org/api.php?action=query&titles=" + diseaseName + "_(patient_information)&export&contentformat=text/plaino";
 
