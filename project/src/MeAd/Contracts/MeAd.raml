@@ -79,6 +79,30 @@ baseUri: http://mocksvc.mulesoft.com/mocks/01beac3d-861b-4be9-ae94-47672354c991/
                 }
 /quiz:
   displayName: Quiz
+  /easy:
+    get:
+      description: get a question from quiz
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                "question":"question",
+                "answers":{ "answer1","answer2","answer3","answer4"}
+                }
+  /hard:
+    get:
+      description: get a question from quiz
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                "question":"question",
+                "answers":{ "answer1","answer2","answer3","answer4"}
+                }
   /top:
     displayName: Top
     get:
@@ -123,44 +147,19 @@ baseUri: http://mocksvc.mulesoft.com/mocks/01beac3d-861b-4be9-ae94-47672354c991/
                 "message":"There are no entries in top"
                 }
 
-  /{quizID}:
-    displayName: QuizId
-    get:
-      description: Get a quiz with specific ID
+  /checkAnswer/{questionID}/{answer}:
+    displayName: checkAnswer
+    post:
+      description: the answer of a question from the user
       responses:
         200:
           body:
             application/json:
               example: |
                 {
-                "quizID":"1",
-                "type":"array",
-                "questions":
-                  [
-                    {
-                    "question":"Also known as a malignant tumor or malignant neoplasm, is a group of diseases involving abnormal cell growth with the potential to invade or spread to other parts of the body.Not all tumors are cancerous; benign tumors do not spread to other parts of the body",
-                    "answers":
-                      ["Obesity","Cancer","Diabetes","Stroke"],
-                    "correctAnswer":"Cancer"
-                    },
-                     {
-                    "question":"A medical condition in which excess body fat has accumulated to the extent that it may have a negative effect on health, leading to reduced life expectancy and/or increased health problems.",
-                    "answers":["Obesity","Cancer","Diabetes","Stroke"],
-                    "correctAnswer":"Obesity"
-                    },
-                      {
-                    "question":"Known as cerebrovascular accident (CVA), cerebrovascular insult (CVI), or brain attack, is when poor blood flow to the brain results in cell death",
-                    "answers":["Obesity","Cancer","Diabetes","Stroke"],
-                    "correctAnswer":"Stroke"
-                    },
-                     {
-                    "question":"A group of metabolic diseases in which there are high blood sugar levels over a prolonged period.[2] Symptoms of high blood sugar include frequent urination, increased thirst, and increased hunger",
-                    "answers":["Obesity","Cancer","Diabetes","Stroke"],
-                    "correctAnswer":"Diabetes"
-                    } 
-                  ]
-                },
-                
+                "answer":"answer1"
+                }
+               
       
         
     

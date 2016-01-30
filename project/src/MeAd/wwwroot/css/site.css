@@ -123,6 +123,15 @@ textarea {
     height: 100px;
   }
 
+  .data-info{
+      font-size:17px;
+  }
+
+  #mapdiv{
+      margin-top:20px;
+  }
+  }
+
   .navbar-inverse{
       background: #0F89D1;
       box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.38);

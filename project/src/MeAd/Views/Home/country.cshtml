@@ -1,0 +1,100 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Dictionary<string, Countries.CountryDiseases> countryDiseases = (Dictionary<string, Countries.CountryDiseases>)ViewBag.countryDiseases;
+}
+<link rel="stylesheet" href="~/css/map/ammap.css" />
+<script src="~/js/map/ammap.js"></script>
+<script src="~/js/map/worldLow.js"></script>
+<script src="~/js/map/black.js"></script>
+
+@if (ViewBag.countryExists == "false")
+{
+    <span style="font-size:16px;">This country doesn't exist. Please choose another one</span>
+}
+else
+{
+
+    <h3>Country: @ViewBag.country</h3>
+    <span class="data-info"><strong>Climate: </strong>@ViewBag.climate</span><br /><br />
+    <span class="data-info"><strong>Obesity: </strong>@ViewBag.obesity%</span><br /><br />
+    <span class="data-info"><strong>Death rate: </strong>@ViewBag.death_rate deaths/1,000 population</span><br/><br/>
+    
+    <span class="data-info"><strong>Most common diseases:</strong></span>
+    @if (countryDiseases.Count > 0)
+    {
+        <br/><br/>
+        @foreach (KeyValuePair<string, Countries.CountryDiseases> disease in countryDiseases)
+        {
+
+            <div>
+                <strong style="font-size:16px"><a href="../viewDisease/@disease.Value.Url">@disease.Value.Disease</a></strong>
+                <p>@disease.Value.Description</p>
+                <p><strong>Number of deaths:</strong> @disease.Value.Deaths</p>
+            </div>
+        }
+    }
+    else { }
+    <div id="mapdiv" style="width: 800px; background-color:#eeeeee; height: 500px;"></div><br />
+    <script>
+    var map;
+
+    AmCharts.ready(function () {
+    map = new AmCharts.AmMap();
+
+
+    var dataProvider = {
+    mapVar: AmCharts.maps.worldLow,
+
+    linkToObject: "@ViewBag.code"
+    };
+
+
+    map.areasSettings = {
+    unlistedAreasColor: "#DDDDDD",
+    rollOverOutlineColor: "#FFFFFF",
+    rollOverColor: "#CC0000",
+    balloonText: "",
+    autoZoom: true,
+    };
+
+    map.creditsPosition = "top-right";
+
+    dataProvider.areas = [
+    {
+    title: "@ViewBag.country",
+    id: "@ViewBag.code",
+    color: "#3366CC",
+    customData: "1995",
+    },
+
+    ];
+
+    map.dataProvider = dataProvider;
+
+    var legend = {
+    width: 600,
+    backgroundAlpha: 0.5,
+    backgroundColor: "#FFFFFF",
+    borderColor: "#666666",
+    borderAlpha: 1,
+    bottom: 15,
+    left: 15,
+    horizontalGap: 10,
+    data: [
+    {
+    title: "@ViewBag.country",
+    color: "#3366CC"
+    },
+
+    ]
+    };
+
+    map.addLegend(legend);
+    map.write("mapdiv");
+
+    });
+
+    </script>
+}
