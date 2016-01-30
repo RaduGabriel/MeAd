@@ -12,11 +12,15 @@
 @ViewBag.error
 
 @if (ViewBag.loggedon == 1)
-{
+{   <h3 class="disease-title" style="padding-bottom:40px">Welcome to the<span style="text-transform:none"><br> MeAd Quiz</span> </h3>
+<span class="data-info common-diseases"><strong>Question</strong></span><br />
+<div class="quiz-block">
     <p>@ViewBag.desc</p>
+</div>
     @foreach (KeyValuePair<string, string> answer in question.Answers)
     {
-        <span><a href="#" id="@answer.Value" class="answer">@answer.Value</a></span><br />
+       <div class="quiz-answer"> <span><a href="#" id="@answer.Value" class="answer">@answer.Value</a></span>
+    </div><br />
     }
 }
 else
