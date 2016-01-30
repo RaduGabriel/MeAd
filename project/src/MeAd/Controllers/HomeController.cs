@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using MySql.Data.MySqlClient;
 using MeAd.Models;
 using Microsoft.AspNet.Http;
 using Newtonsoft.Json;
-using System.Net.Http;
 using System.Net;
 using System.IO;
+using VDS.RDF.Query;
 
 namespace MeAd.Controllers
 {
@@ -259,20 +257,15 @@ namespace MeAd.Controllers
                 }
                 catch { }
 
-                //List<string> 
-                ViewBag.ICDcode = "N.A.";
-                rd = db.ExecuteReader("SELECT * FROM `diseasestatistics` where country like '%" + countryName + "%' order by deaths desc limit 20");
-                while (rd.Read())
-                {
-                    string code = rd.GetString("code");
-                    ViewBag.ICDcode = code;
-                }
 
-
-
-
-
-                db.Close();
+            }
+            catch { }
+            ViewBag.nr = 0;
+            try
+            {
+                ObjectResult obj = (ObjectResult)new MeAd.Raml.SearchController().Get(countryName);
+                Dictionary<string, Countries.CountryDiseases> countryDiseases = (Dictionary<string, Countries.CountryDiseases>)obj.Value;
+                ViewBag.countryDiseases = countryDiseases;
             }
             catch { }
             return View();

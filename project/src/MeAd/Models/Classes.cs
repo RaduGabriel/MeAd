@@ -153,6 +153,46 @@ namespace MeAd.Models
                 }
             }
         }
+
+        public class CountryDiseases
+        {
+            
+            int deaths;
+            string disease;
+            string description;
+            string url;
+
+            public CountryDiseases(int deaths,string disease,string description,string url)
+            {
+               
+                this.deaths = deaths;
+                this.disease = disease;
+                this.description = description;
+                this.url = url;
+            }
+          
+            public int Deaths
+            {
+                get { return deaths; }
+                set { deaths = value; }
+            }
+            public string Url
+            {
+                get { return url; }
+                set { url = value; }
+            }
+            public string Disease
+            {
+                get { return disease; }
+                set { disease = value; }
+            }
+            public string Description
+            {
+                get { return description; }
+                set { description = value; }
+            }
+
+        }
     }
 
 }

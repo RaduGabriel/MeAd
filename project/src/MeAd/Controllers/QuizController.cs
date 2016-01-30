@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
+using MeAd.Models;
+using MySql.Data.MySqlClient;
 
 namespace MeAd.Raml
 {
@@ -15,8 +17,24 @@ namespace MeAd.Raml
 		/// </summary>
         public IActionResult Get()
         {
+            Random rand = new Random();
+            string code="";
+            int id = rand.Next(1, 213807);
+            try
+            {
+                database db = new database(database.maindb);
+                db.AddParam("?id", id);
+                
+                MySqlDataReader rd = db.ExecuteReader("select code from diseasestatistics where id=?id");
+                while(rd.Read())
+                {
+                    code = rd.GetString("code");
+                }
+
+            }
+            catch { return new ObjectResult(""); }
             // TODO: implement Get - route: quiz/top
-			return new ObjectResult("");
+			return new ObjectResult(code);
         }
 
 		/// <summary>
