@@ -16,19 +16,20 @@
 else
 {
 
-    <h3>Country: @ViewBag.country</h3>
-    <span class="data-info"><strong>Climate: </strong>@ViewBag.climate</span><br /><br />
-    <span class="data-info"><strong>Obesity: </strong>@ViewBag.obesity%</span><br /><br />
-    <span class="data-info"><strong>Death rate: </strong>@ViewBag.death_rate deaths/1,000 population</span><br/><br/>
-    
-    <span class="data-info"><strong>Most common diseases:</strong></span>
+    <h3 class="country-title">Country<br><span> @ViewBag.country</span></h3>
+    <div class="country-data-info">
+        <span class="data-info"><strong>Climate: </strong>@ViewBag.climate</span><br /><br />
+        <span class="data-info"><strong>Obesity: </strong>@ViewBag.obesity%</span><br /><br />
+        <span class="data-info"><strong>Death rate: </strong>@ViewBag.death_rate deaths/1,000 population</span><br/><br/>
+    </div>
+    <span class="data-info common-diseases"><strong>Most common diseases</strong></span>
     @if (countryDiseases.Count > 0)
     {
         <br/><br/>
         @foreach (KeyValuePair<string, Countries.CountryDiseases> disease in countryDiseases)
         {
 
-            <div>
+            <div class="disease-block">
                 <strong style="font-size:16px"><a href="../viewDisease/@disease.Value.Url">@disease.Value.Disease</a></strong>
                 <p>@disease.Value.Description</p>
                 <p><strong>Number of deaths:</strong> @disease.Value.Deaths</p>
