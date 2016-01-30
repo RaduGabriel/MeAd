@@ -1,10 +1,13 @@
 // Template: Controller Implementation (ApiControllerImplementation.t4) version 3.0
 
 using System;
+using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using VDS.RDF.Query;
+using Microsoft.AspNet.Http;
+using MeAd.Models;
 
 namespace MeAd.Raml
 {
@@ -20,6 +23,10 @@ namespace MeAd.Raml
             Dictionary<string, string> resultsObject = new Dictionary<string, string>();
             diseaseName = diseaseName.Replace("%20", " ");
             diseaseName = diseaseName.Replace("_", " ");
+
+           
+            
+            
             resultsObject.Add("name", diseaseName);
             resultsObject.Add("abstract", "na");
             resultsObject.Add("id", "na");

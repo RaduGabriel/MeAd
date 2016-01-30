@@ -122,6 +122,20 @@ namespace MeAd.Controllers
         {
             ViewBag.error = "false";
             ViewBag.diseaseExists = "false";
+
+            try
+            {
+                if ((Context.Session.GetInt32("on") != null && Context.Session.GetInt32("on") == 1))
+                {
+                    int userid = (int)Context.Session.GetInt32("id");
+                    string key = diseaseName + userid.ToString();
+
+                    Models.database db = new database(database.maindb);
+                    MySqlDataReader rd = db.ExecuteReader("replace into viewHistory (id,diseaseName,ky) values(" + userid.ToString() + ", '" + diseaseName + "', '" + key + "');");
+                    db.Close();
+                }
+            }
+            catch { }
             try
             {
                 ObjectResult obj = (ObjectResult)new MeAd.Raml.DiseaseDiseaseNameController().Get(diseaseName);
@@ -214,6 +228,7 @@ namespace MeAd.Controllers
                 while (rd.Read())
                 {
                     Context.Session.SetInt32("on", 1);
+                    Context.Session.GetInt32("on");
                     Context.Session.SetInt32("id", rd.GetInt32("id"));
                     Context.Session.SetString("email", rd.GetString("email"));
                     Context.Session.SetString("username", rd.GetString("username"));
