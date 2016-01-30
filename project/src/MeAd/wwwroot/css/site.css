@@ -50,7 +50,7 @@ textarea {
 #logout
 {
         margin-top: 15px;
-    color: #999999;
+    color: #fff;
 }
 
  #tfheader {
@@ -224,18 +224,20 @@ span#no-result {
 
 }
 
-.country-title,.disease-title {
+.country-title,.disease-title,.cool-title {
     text-transform:uppercase;
     color:#797474
 
 }
 
-.country-title span,.disease-title span {
+.country-title span,.disease-title span,.cool-title span {
     font-size: 50px;
     font-weight: bold;
     color: #0F89D1;}
 
-.disease-block {    border-left: 3px solid #8C8C8C;
+.cool-title span {font-size:40px}
+
+.disease-block,.quiz-block {    border-left: 3px solid #8C8C8C;
     padding: 10px;
     margin-bottom: 30px;
     width: 60%;
@@ -247,12 +249,14 @@ span#no-result {
     margin-top: 7px
 }
 
-.disease-block:hover {
+.disease-block:hover,.quiz-block:hover {
     border-color:#0f89d1;
     background: rgba(255, 255, 255, 0.65);
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.31);
     
 }
+
+ 
 
 .common-diseases {background: #0F89D1;
     padding: 10px;
@@ -271,5 +275,39 @@ span#no-result {
 .select-1 {float:left;margin-right:20px}
 
 #select-diseases .form-group {float:left;width:35%}
+
+.quiz-answer a {width: 350px;
+    background: #0F89D1;
+    display: block;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+
+    -webkit-transition: all 500ms ease-out 0s;
+    -moz-transition: all 500ms ease-out 0s;
+    -o-transition: all 500ms ease-out 0s;
+    transition: all 500ms ease-out 0s;
+}
+
+.quiz-answer a:hover {  border: 1px solid white;  
+    box-shadow: 0px 0px 15px #656565;
+    background:#026EAD;
+    -webkit-transition: all 500ms ease-out 0s;
+    -moz-transition: all 500ms ease-out 0s;
+    -o-transition: all 500ms ease-out 0s;
+    transition: all 500ms ease-out 0s;
+}
+
+.radu,.mihaela {    float: left;
+    margin-right: 40px;}
+
   
- 
+#logout-btn {    background: #fff;
+    padding: 2px 15px;
+    border-radius: 6px;
+    margin-left: 10px;
+    color: #0F89D1;
+    text-decoration: none;
+    font-weight: bold}
