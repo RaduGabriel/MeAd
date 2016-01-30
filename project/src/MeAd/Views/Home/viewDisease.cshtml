@@ -64,20 +64,18 @@
         <div class="form-group">
             <label for="sel1">Select list:</label>
             <select class="form-control" id="sel1">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                <option value="0">All</option>
+                <option value="1">Climate</option>
+                <option value="2">Obesity</option>
+                <option value="3">Density</option>
             </select>
         </div>
 
         <div class="form-group">
             <label for="sel2">Select list:</label>
             <select class="form-control" id="sel2">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
+                
+                
             </select>
         </div>
 
@@ -95,6 +93,82 @@ else if (ViewBag.diseaseExists == "false")
 
 
 <script>
+    $("#sel1").change(function () {
+        var value = this.value;
+        if (value == 1) {
+            $("#sel2").empty();
+            $("#sel2").append(" <option value='1'>tropical</option> \
+                                <option value='2'>semiarid</option> \
+                                <option value='3'>arid</option> \
+                                <option value='4'>mediterranean</option> \
+                                <option value='5'>subtropical</option> \
+                                <option value='6'>marine</option> \
+                                <option value='7'>arctic</option> \
+                                <option value='8'>subarctic</option> \
+                                <option value='9'>continental</option> \
+                                <option value='10'>temperate</option> \
+                                <option value='11'>turda</option> \
+                                <option value='12'>ice cap</option> \
+                                <option value='13'>non-permanent ice</option> \
+                                <option value='14'>highlands</option> ");
+            updateClimate("tropical");
+        }
+        else if (value == 2) {
+            $("#sel2").empty();
+            $("#sel2").append(" <option value='1'>0-5</option> \
+                                <option value='2'>5-10</option> \
+                                <option value='3'>10-20</option> \
+                                <option value='4'>25-30</option> \
+                                <option value='5'>30-50</option> ");
+            updateObesity(0,5);
+
+        }
+        else if (value == 3) {
+            $("#sel2").empty();
+            $("#sel2").append(" <option value='1'>0-40</option> \
+                                <option value='2'>40-100</option> \
+                                <option value='3'>100-150</option> \
+                                <option value='4'>over 150</option> ");
+            updateDensity(0, 40);
+
+        }
+        else {
+
+            updateData();
+        }
+    });
+    $("#sel2").change(function () {
+        var value = this.value;
+        var value = $("#sel2 option[value='" + value + "']").text()
+        var category = $("#sel1").val();
+        if (category == 1) updateClimate(value);
+        else if (category == 2) {
+            values = value.split('-');
+            one = values[0];
+            two = values[1];
+            
+            updateObesity(one, two);
+
+        }
+        else if(category==3)
+        {
+            values = value.split('-');
+            if (value[0] == 'o') {
+                one = 150;
+                two = 1000;
+            }
+            else {
+                one = values[0];
+                two = values[1];
+                alert(one + " " + two);
+            }
+            updateDensity(one, two);
+
+        }
+        
+        
+    });
+
 
     var map = new AmCharts.AmMap();
     var minBulletSize = 3;
